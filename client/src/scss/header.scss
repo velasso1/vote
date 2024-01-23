@@ -1,0 +1,14 @@
+.header {
+    display: flex;
+    background-color: peru;
+    justify-content: center;
+
+    &__menu {
+        display: flex;
+    }
+
+    &__menu-item {
+        margin: 0 10px;
+        font-size: 20px;
+    }
+}
