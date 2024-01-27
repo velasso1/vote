@@ -3,13 +3,15 @@
 }
 
 // IMPORT FONTS
-
+@import "fonts.scss";
 // ============================================
 
 // IMPORT RESET STYLES
 @import "reset.scss";
 @import "header.scss";
-@import "loginPage.scss";
+@import "login-page.scss";
+@import "events-list.scss";
+@import "current-event.scss";
 // ============================================
 
 // IMPORT STYLES

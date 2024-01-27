@@ -1,21 +1,30 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import PrivateRoute from "./routes/private-route";
 
 import "./scss/style.scss";
 
 import Header from "./components/ui/header";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
-import AdminPage from "./pages/AdminPage";
+import HomePage from "./pages/home-page";
+import LoginPage from "./pages/login-page";
+import AdminPage from "./pages/admin-page";
+import CurrentPage from "./pages/current-page";
 
 function App() {
   return (
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/authroized" element={<AdminPage />} />
+        <Route path="*" element={<LoginPage />} />
+        <Route
+          path="/events"
+          element={<PrivateRoute children={<HomePage />} />}
+        />
+        <Route
+          path="/events/current-event/:id"
+          element={<PrivateRoute children={<CurrentPage />} />}
+        />
+        <Route path="/admin-page" element={<AdminPage />} />
       </Routes>
     </>
   );
