@@ -2,41 +2,46 @@
     display: flex;
     margin: 0 auto;
     flex-direction: column;
-    align-items: center;
     font-family: 'Open Sans', serif;
     font-weight: 500;
+    width: 1000px;
 
     &__name {
+        margin: 20px 0 0 0;
+        font-size: 25px;
+        text-align: center;
+    }
 
+    &__name:first-letter,
+    &__description:first-letter {
+        text-transform: uppercase;
     }
 
     &__description {
-
+        margin: 20px 0 20px 0;
+        font-size: 20px;
     }
 
-    &__date {
-
+    &__closed {
+        text-align: center;
     }
 
     &__buttons {
         display: flex;
         justify-content: center;
-        // width: 800px;
     }
 
     &__button {
+        margin-right: 50px;
         width: 260px;
         padding: 20px 35px;
         font-size: 15px;
         border-radius: 5px;
         transition: .2s;
         font-weight: 500;
-        margin: 0 60px;
     }
 
     &__button:active {
-        width: 230px;
-        margin: 0 75px;
         font-size: 13px;
     }
 

@@ -4,6 +4,7 @@ const initialState = {
   login: null,
   token: null,
   isAuth: false,
+  isAdmin: true,
 };
 
 const user = createSlice({
@@ -12,7 +13,7 @@ const user = createSlice({
   reducers: {
     setUser(state, action) {
       state.login = action.payload.login;
-      state.isAuth = !!action.payload.token;
+      state.isAuth = action.payload.login && action.payload.password;
     },
 
     removeUser(state) {

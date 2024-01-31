@@ -32,12 +32,12 @@ const Checkbox = ({ name, text, checked, setChecked }) => {
     <>
       <label htmlFor={name}>{text}</label>
       <input
-        className="someCHECK"
+        className="events__checkbox"
         type="checkbox"
         name={name}
         checked={checked[`${name}`]}
         onChange={(e) => setCheckbox(e.target.name)}
-      />
+      />{" "}
     </>
   );
 };

@@ -1,19 +1,16 @@
-.App {
-    background-color: red;
-}
-
 // IMPORT FONTS
-@import "fonts.scss";
+@import "fonts";
 // ============================================
 
 // IMPORT RESET STYLES
 @import "reset.scss";
+// ============================================
+
+// IMPORT STYLES
 @import "header.scss";
 @import "login-page.scss";
 @import "events-list.scss";
 @import "current-event.scss";
-// ============================================
-
-// IMPORT STYLES
-
+@import "accepted-vote.scss";
+@import "stats.scss";
 // ============================================

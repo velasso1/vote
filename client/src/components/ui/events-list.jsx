@@ -12,6 +12,8 @@ const EventsList = () => {
     closed: false,
   });
 
+  const { isAdmin } = useSelector((state) => state.user);
+
   const target = useSelector((state) => state.checkbox.target);
   const dispatch = useDispatch();
 
@@ -30,7 +32,15 @@ const EventsList = () => {
     <>
       <div className="events">
         <div className="events__filter">
-          Показать:
+          {isAdmin && (
+            <div className="events__admin-menu">
+              <button className="events__admin-button">
+                Создать учетную запись
+              </button>
+              <button className="events__admin-button">Создать событие</button>
+            </div>
+          )}
+          <span className="events__desc">Показать:</span>
           {config.checkBox.map((item, index) => {
             return (
               <Checkbox
@@ -48,7 +58,7 @@ const EventsList = () => {
             return (
               <EventsItem
                 key={index}
-                id={index}
+                id={item.id}
                 name={item.name}
                 description={item.description}
                 date={item.dateOfCreate}

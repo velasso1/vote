@@ -1,0 +1,17 @@
+.accepted-modal {
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        padding: 13px 40px;
+        border-radius: 10px;
+        background-color: #e7e7e7;
+    }
+
+    &__title {
+        font-size: 18px;
+        color: #000;
+    }
+}

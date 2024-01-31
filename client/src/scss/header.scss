@@ -1,10 +1,31 @@
 .header {
+    position: relative;
     display: flex;
     background-color: rgb(23, 21, 92);
     justify-content: space-evenly;
     align-items: center;
     color: #fff;
     font-family: 'Open Sans', serif;
+
+    &__back-item {
+        position: absolute;
+        top: 80%;
+        left: 43%;
+        font-size: 15px;
+        color: #fff;
+        text-transform: uppercase;
+        background-color: inherit;
+    }
+
+    &__back-item_forward {
+        left: 53%;
+        position: absolute;
+        top: 80%;
+        font-size: 15px;
+        color: #fff;
+        text-transform: uppercase;
+        background-color: inherit;
+    }
 
     &__menu {
         display: flex;

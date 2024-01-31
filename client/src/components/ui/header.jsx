@@ -2,10 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../../store/slices/user";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const auth = useSelector((state) => state.user.isAuth);
+  const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const signOut = () => {
     dispatch(removeUser());
@@ -20,9 +22,22 @@ const Header = () => {
         <h2 className="header__subtitle">
           Московский университет МВД России им. В.Я. Кикотя
         </h2>
+        {isAuth && (
+          <div className="header__back">
+            <button className="header__back-item" onClick={() => navigate(-1)}>
+              &#8592; назад
+            </button>
+            <button
+              className="header__back-item_forward"
+              onClick={() => navigate(1)}
+            >
+              вперед &#8594;
+            </button>
+          </div>
+        )}
       </div>
       <div className="header__menu">
-        {auth ? (
+        {isAuth ? (
           <>
             <NavLink className="header__menu-item" to="/events">
               меню
