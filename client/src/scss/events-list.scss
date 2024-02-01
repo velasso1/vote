@@ -15,6 +15,7 @@ $bgcolor: #efedcf;
         justify-content: center;
         padding: 20px 0 0 0;
         font-size: 20px;
+        animation: filt 1s forwards;
     }
 
     &__list {
@@ -23,6 +24,7 @@ $bgcolor: #efedcf;
         margin: 0 auto;
         justify-content: center;
         flex-wrap: wrap;
+        animation: events 1s forwards;
     }
 
     &__item {
@@ -127,4 +129,17 @@ $bgcolor: #efedcf;
     &__admin-button:hover {
         background-color: #29508e;
     }
+}
+
+@keyframes events {
+    0% {margin-top: 500px;}
+    100% {
+        margin-top: 0;
+        opacity: 100%;
+    }
+}
+
+@keyframes filt {
+    0% {opacity: 10%;}
+    100% {opacity: 100%;}
 }

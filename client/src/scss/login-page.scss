@@ -1,8 +1,8 @@
 .login {
     display: flex;
     justify-content: center;
-    background-color: #f9b4b4;
     margin: 20px 0 0 0;
+    font-family: 'Open Sans', serif;
     
     &__form {
         display: flex;
@@ -10,11 +10,19 @@
         width: 300px;
     }
 
-    &__input,
+
     &__button {
         padding: 5px 0;
         border-radius: 5px;
         margin: 5px;
+        background-color: #17155c;
+        color: #fff;
+    }
+
+    &__input {
+        padding: 5px 0 5px 15px;
+        margin: 5px;
+        border-radius: 5px;
         border: 2px solid black;
     }
 }

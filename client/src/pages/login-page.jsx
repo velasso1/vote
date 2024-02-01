@@ -45,7 +45,7 @@ const LoginPage = () => {
         <form onSubmit={(e) => enter(e)} className="login__form">
           <input
             className="login__input"
-            placeholder="введите логин"
+            placeholder="Введите логин"
             value={userData.login}
             onChange={(e) =>
               setUserData({ ...userData, login: `${e.target.value.trim()}` })
@@ -53,7 +53,7 @@ const LoginPage = () => {
           />
           <input
             className="login__input"
-            placeholder="введите пароль"
+            placeholder="Введите пароль"
             value={userData.password}
             onChange={(e) =>
               setUserData({ ...userData, password: `${e.target.value.trim()}` })
