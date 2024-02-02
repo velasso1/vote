@@ -1,8 +1,9 @@
 import React from 'react';
+import CreateEvent from '../components/ui/create-event';
 
 const CreateEventPage = () => {
     return (
-        <h1>Page for create event</h1>
+        <CreateEvent/>
     )
 }
 
