@@ -1,0 +1,54 @@
+// width for inputs and t/a
+$text-width: 500px;
+
+// mixin for inputs and t/a
+@mixin marginElem {
+    margin: 5px 0 20px 0;
+    padding: 5px 0 5px 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+    width: $text-width;
+}
+
+.create-event {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    font-family: "Open Sans" ,sans-serif;
+
+    &__title {
+        margin: 30px 0;
+    }
+
+    &__info {
+        display: flex;
+        margin: 0 auto;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__name {
+        @include marginElem();
+    }
+
+    &__description {
+        min-height: 120px;
+        max-height: 2000px;
+        resize: vertical;
+
+        @include marginElem();
+    }
+    
+    &__quantity {
+        @include marginElem();
+    }
+
+    &__peoples {
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+.create-event label {
+    font-size: 15px;
+}

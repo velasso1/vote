@@ -1,0 +1,65 @@
+.current-event {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 500;
+    width: 1000px;
+    margin-top: 500px;
+    opacity: 10%;
+    animation: events 1s forwards;
+
+    &__name {
+        margin: 20px 0 0 0;
+        font-size: 25px;
+        text-align: center;
+    }
+
+    &__name:first-letter,
+    &__description:first-letter {
+        text-transform: uppercase;
+    }
+
+    &__description {
+        margin: 20px 0 20px 0;
+        font-size: 20px;
+    }
+
+    &__closed {
+        text-align: center;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__button {
+        margin-right: 50px;
+        width: 260px;
+        padding: 20px 35px;
+        font-size: 15px;
+        border-radius: 5px;
+        transition: .2s;
+        font-weight: 500;
+    }
+
+    &__button:active {
+        font-size: 13px;
+    }
+
+    &__button:hover {
+        background-color: #4472bc;
+    }
+
+}
+
+.support { 
+    background-color: #7FCD51;
+}
+
+.denied {
+    background-color: #F26065;
+}
+
+
