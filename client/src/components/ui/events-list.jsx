@@ -4,6 +4,7 @@ import { changeTarget } from "../../store/slices/check-box";
 import EventsItem from "./events-item";
 import Checkbox from "./checkbox";
 import config from "../../auxuliary.json";
+import { useNavigate } from "react-router-dom";
 
 const EventsList = () => {
   const [checked, setChecked] = useState({
@@ -11,6 +12,8 @@ const EventsList = () => {
     opened: false,
     closed: false,
   });
+
+  const navigate = useNavigate();
 
   const { isAdmin } = useSelector((state) => state.user);
 
@@ -32,14 +35,6 @@ const EventsList = () => {
     <>
       <div className="events">
         <div className="events__filter">
-          {isAdmin && (
-            <div className="events__admin-menu">
-              <button className="events__admin-button">
-                Создать учетную запись
-              </button>
-              <button className="events__admin-button">Создать событие</button>
-            </div>
-          )}
           <span className="events__desc">Показать:</span>
           {config.checkBox.map((item, index) => {
             return (
@@ -53,6 +48,29 @@ const EventsList = () => {
             );
           })}
         </div>
+        {isAdmin && (
+          <div className="events__admin-menu">
+            <button
+              className="events__admin-button"
+              onClick={(e) => navigate("/create-user")}
+            >
+              Создать учетную запись
+            </button>
+            <button
+              className="events__admin-button"
+              onClick={(e) => navigate("/create-event")}
+            >
+              Создать событие
+            </button>
+
+            <button
+              className="events__admin-button"
+              onClick={(e) => navigate("/manage")}
+            >
+              Управление пользователями
+            </button>
+          </div>
+        )}
         <div className="events__list">
           {newData.map((item, index) => {
             return (

@@ -58,7 +58,7 @@ const CurrentEvent = () => {
       {isAdmin && (
         <div className="stats">
           <h3 className="stats__title">Статистика голосования:</h3>
-          <table>
+          <table className="stats__table">
             <tbody>
               <tr>
                 <td>Количество ЗА</td>

@@ -10,4 +10,19 @@ const events = createSlice({
   reducers: {},
 });
 
+// Actions
+
+export const deleteEvent = (id) => {
+  return () => {
+    console.log(id);
+    // try {
+    //   fetch(`API:/${id}`, {
+    //     method: "DELETE",
+    //   });
+    // } catch (error) {
+    //   console.error(error.message);
+    // }
+  };
+};
+
 export default events.reducer;

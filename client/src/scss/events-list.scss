@@ -7,7 +7,8 @@ $bgcolor: #efedcf;
     width: 1100px;
     flex-direction: column;
     justify-content: center;
-    font-family: 'Open Sans', serif;
+    font-family: 'Open Sans', sans-serif;
+    animation: filt 1s forwards;
 
     &__filter {
         display: flex;
@@ -15,7 +16,7 @@ $bgcolor: #efedcf;
         justify-content: center;
         padding: 20px 0 0 0;
         font-size: 20px;
-        animation: filt 1s forwards;
+        
     }
 
     &__list {
@@ -34,7 +35,7 @@ $bgcolor: #efedcf;
         width: 250px;
         margin: 50px;
         background-color: #efedcf;
-        font-family: "Open Sans", serif;
+        font-family: "Open Sans", sans-serif;
         border-radius: 5px;
         border: 1px solid black;
     }
@@ -42,13 +43,13 @@ $bgcolor: #efedcf;
     &__name {
         padding: 10px 5px;
         overflow: hidden;
-        text-wrap: nowrap;
+        white-space: nowrap;
         text-overflow: ellipsis;
         font-size: 20px;
         text-align: center;
         background-color: #fff;
-        border-top-right-radius: 10px;
-        border-top-left-radius: 10px;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
     }
 
     &__description {
@@ -80,11 +81,26 @@ $bgcolor: #efedcf;
     }
 
     &__status {
+        position: relative;
         text-align: center;
         font-size: 15px;
         padding: 5px 0 10px 0;
         text-transform: uppercase;
         font-weight: 600;
+    }
+
+    &__delete-icon {
+        position: absolute;
+        cursor: pointer;
+        width: 25px;
+        left: 90%;
+        transition: .3s;
+        padding: 1px;
+        top: -30%;
+    }
+
+    &__delete-icon:hover {
+        fill: tomato;
     }
 
     &__checkbox {
@@ -113,17 +129,22 @@ $bgcolor: #efedcf;
     &__admin-menu {
         display: flex;
         justify-content: center;
+        margin: 20px 0 0 0;
     }
 
     &__admin-button {
         background-color: #17155c;
-        margin-right: 50px;
+        
         padding: 10px 25px;
         font-size: 15px;
         border-radius: 5px;
         transition: .2s;
         font-weight: 500;
         color: #fff;
+    }
+
+    &__admin-button:nth-child(-n+2) {
+        margin-right: 50px;
     }
 
     &__admin-button:hover {

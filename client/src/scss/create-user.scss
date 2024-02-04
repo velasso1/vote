@@ -1,0 +1,82 @@
+.create-user {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    font-family: "Open Sans", sans-serif;
+    animation: create-event 1s forwards;
+
+    &__info {
+        position: relative;
+    }
+
+    &__title {
+        margin: 30px 0;
+    }
+
+    &__login,
+    &__password {
+        margin-top: 5px;
+        padding: 5px 0 5px 5px;
+        border-radius: 5px;
+        border: 1px solid black;
+        width: 500px;
+    }
+
+    &__login {
+        margin: 5px 0 20px 0;
+    }
+
+    &__buttons {
+        display: flex;
+        width: $text-width;
+        justify-content: space-between; 
+        margin: 20px 0;
+    }
+
+    &__button {
+        background-color: #17155c;
+        padding: 10px 25px;
+        font-size: 15px;
+        border-radius: 5px;
+        transition: .2s;
+        font-weight: 500;
+        color: #fff;
+    }
+
+    &__button:hover {
+        background-color: #29508e;
+    }
+
+    &__icon {
+        position: absolute;
+        left: 100%;
+        margin: 2px 0 0 5px;
+        cursor: pointer;
+    }
+
+    &__clue {
+        font-size: 13px;
+    }
+
+    &__notice {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+button:disabled,
+input:disabled {
+    opacity: 40%;
+}
+
+.create-user label {
+    font-size: 15px;
+}
+
+.password-box {
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}

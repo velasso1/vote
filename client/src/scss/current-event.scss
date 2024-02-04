@@ -2,11 +2,9 @@
     display: flex;
     margin: 0 auto;
     flex-direction: column;
-    font-family: 'Open Sans', serif;
+    font-family: 'Open Sans', sans-serif;
     font-weight: 500;
     width: 1000px;
-    margin-top: 500px;
-    opacity: 10%;
     animation: events 1s forwards;
 
     &__name {

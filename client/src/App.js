@@ -7,8 +7,10 @@ import "./scss/style.scss";
 import Header from "./components/ui/header";
 import HomePage from "./pages/home-page";
 import LoginPage from "./pages/login-page";
-import AdminPage from "./pages/admin-page";
 import CurrentPage from "./pages/current-page";
+import CreateEventPage from "./pages/create-event-page";
+import CreateUserPage from "./pages/create-user-page";
+import ManageUsersPage from "./pages/manage-users-page";
 
 function App() {
   return (
@@ -24,7 +26,20 @@ function App() {
           path="/events/current-event/:id"
           element={<PrivateRoute children={<CurrentPage />} />}
         />
-        <Route path="/admin-page" element={<AdminPage />} />
+        <Route
+          path="/create-event"
+          element={<PrivateRoute children={<CreateEventPage />} />}
+        />
+
+        <Route
+          path="/create-user"
+          element={<PrivateRoute children={<CreateUserPage />} />}
+        />
+
+        <Route
+          path="/manage"
+          element={<PrivateRoute children={<ManageUsersPage />} />}
+        />
       </Routes>
     </>
   );

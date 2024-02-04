@@ -1,0 +1,126 @@
+// width for inputs and t/a
+$text-width: 500px;
+
+// mixin for inputs and t/a
+@mixin marginElem {
+    margin: 5px 0 20px 0;
+    padding: 5px 0 5px 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+    width: $text-width;
+}
+
+.create-event {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    font-family: "Open Sans" ,sans-serif;
+    justify-content: center;
+    align-items: center;
+    animation: create-event 1s forwards;
+
+    &__title {
+        margin: 30px 0;
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__name {
+        @include marginElem();
+    }
+
+    &__description {
+        min-height: 120px;
+        max-height: 200px;
+        resize: vertical;
+
+        @include marginElem();
+    }
+    
+    &__quantity {
+        @include marginElem();
+    }
+
+    &__peoples {
+        display: flex;
+        margin-bottom: 20px;
+        justify-content: space-between;
+        width: $text-width;
+    }
+
+    &__left,
+    &__right {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    &__item {
+        padding: 5px 0;
+        cursor: pointer;
+        border: 1px solid;
+        border-color: transparent;
+    }
+
+    &__item:hover {
+        border: 1px solid red;
+    }
+
+    &__item:nth-child(odd) {
+        background-color: #ccc;
+    }
+
+    &__selected,
+    &__all {
+        border: 1px solid black;
+        margin-top: 5px;
+        max-height: 258px;
+        overflow-y: scroll;
+    }
+
+    &__buttons {
+        display: flex;
+        width: $text-width;
+        justify-content: space-between; 
+        margin-bottom: 20px;;
+    }
+
+    &__button {
+        background-color: #17155c;
+        padding: 10px 25px;
+        font-size: 15px;
+        border-radius: 5px;
+        transition: .2s;
+        font-weight: 500;
+        color: #fff;
+    }
+
+    &__button:hover {
+        background-color: #29508e;
+    }
+}
+
+.create-event label {
+    font-size: 15px;
+}
+
+.create-event ul {
+    list-style: none;
+    width: $text-width / 2.2;
+    border-radius: 5px;
+}
+
+@keyframes create-event {
+    0% {
+        margin-top: 500px;
+        opacity: 10%;
+    }
+
+    100% {
+        margin-top: 0;
+        opacity: 100%;
+    }
+}

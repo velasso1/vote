@@ -40,6 +40,20 @@ export const signIn = (body) => {
   };
 };
 
+export const createNewUser = (body) => {
+  return () => {
+    // try {
+    //   fetch("API", {
+    //     method: "PIST",
+    //     headers: { "Contnet-Type": "appliction/json" },
+    //     body: JSON.stringify(body),
+    //   });
+    // } catch (err) {
+    //   console.error(err.message);
+    // }
+  };
+};
+
 export const { setUser, removeUser } = user.actions;
 
 export default user.reducer;
