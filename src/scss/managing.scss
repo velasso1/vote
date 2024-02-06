@@ -1,0 +1,47 @@
+.managing {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    animation: create-event 1s forwards;
+
+    &__title {
+        margin: 30px 0;
+    }
+
+    &__list {
+        list-style: none;
+        width: 500px;
+        border: 1px solid black;
+        border-bottom: none;
+    }
+
+    &__item {
+        background-color: #fff;
+        transition: .3s;
+    }
+
+    &__item:nth-child(odd) {
+        background-color: #ccc;
+    }
+
+    &__item:hover {
+        background-color: #7FCD51;
+        cursor: pointer;
+    }
+
+    &__edit, 
+    &__delete {
+        transition: .3s;
+    }
+
+    &__edit:hover {
+        background-color: #17155c;
+        color: #fff;
+    }
+
+    &__delete:hover {
+        background-color: tomato;
+    }
+}

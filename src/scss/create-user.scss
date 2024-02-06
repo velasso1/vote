@@ -3,7 +3,6 @@
     flex-direction: column;
     text-align: center;
     align-items: center;
-    font-family: "Open Sans", sans-serif;
     animation: create-event 1s forwards;
 
     &__info {
@@ -66,8 +65,10 @@
 }
 
 button:disabled,
-input:disabled {
+input:disabled,
+textarea:disabled {
     opacity: 40%;
+    cursor: not-allowed;
 }
 
 .create-user label {

@@ -11,6 +11,7 @@ import CurrentPage from "./pages/current-page";
 import CreateEventPage from "./pages/create-event-page";
 import CreateUserPage from "./pages/create-user-page";
 import ManageUsersPage from "./pages/manage-users-page";
+import EditUserPage from "./pages/edit-user-page";
 
 function App() {
   return (
@@ -39,6 +40,11 @@ function App() {
         <Route
           path="/manage"
           element={<PrivateRoute children={<ManageUsersPage />} />}
+        />
+
+        <Route
+          path="/edit-user/:id"
+          element={<PrivateRoute children={<EditUserPage />} />}
         />
       </Routes>
     </>

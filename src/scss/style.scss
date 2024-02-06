@@ -16,5 +16,10 @@
 @import "create-event.scss";
 @import "create-user.scss";
 @import "success.scss";
-@import "confirm-action.scss"
+@import "confirm-action.scss";
+@import "managing.scss";
 // ============================================
+
+body {
+    font-family: "Open Sans", sans-serif;
+}

@@ -1,7 +1,8 @@
 import React from "react";
+import Managing from "../components/ui/managing";
 
 const ManageUsersPage = () => {
-  return <h1>Manage your users</h1>;
+  return <Managing/>;
 };
 
 export default ManageUsersPage;

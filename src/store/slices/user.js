@@ -5,6 +5,7 @@ const initialState = {
   token: null,
   isAuth: false,
   isAdmin: true,
+  userData: null,
 };
 
 const user = createSlice({
@@ -20,6 +21,10 @@ const user = createSlice({
       state.login = null;
       state.isAuth = false;
     },
+
+    userToEdit(state, action) {
+      state.userData = action.payload;
+    }
   },
 });
 
@@ -44,7 +49,7 @@ export const createNewUser = (body) => {
   return () => {
     // try {
     //   fetch("API", {
-    //     method: "PIST",
+    //     method: "POST",
     //     headers: { "Contnet-Type": "appliction/json" },
     //     body: JSON.stringify(body),
     //   });
@@ -54,6 +59,39 @@ export const createNewUser = (body) => {
   };
 };
 
-export const { setUser, removeUser } = user.actions;
+// add token here
+export const deleteUser = (id) => {
+  return () => {
+    console.log(id);
+    // try {
+    //   fetch("API/:id", {
+    //     method: "DELETE",
+    //     headers: {
+    //       "X-access-token": `${token}`
+    //     }
+    //   })
+    // } catch (error) {
+    //   console.error(error.message);
+    // }
+  }
+}
+
+// add => body, token here
+export const updateUserData = (id) => {
+  return () => {
+    console.log(id);
+    // try {
+    //   fetch("API/:id", {
+    //     method: "PUT",
+    //     headers: {"Content-Type": "application/json", "X-access-token": `${token}`},
+    //     body: JSON.stringify(body)
+    //   })
+    // } catch (error) {
+    //   console.error(error.message);
+    // }
+  }
+}
+
+export const { setUser, removeUser, userToEdit } = user.actions;
 
 export default user.reducer;

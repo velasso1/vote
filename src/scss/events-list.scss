@@ -7,7 +7,6 @@ $bgcolor: #efedcf;
     width: 1100px;
     flex-direction: column;
     justify-content: center;
-    font-family: 'Open Sans', sans-serif;
     animation: filt 1s forwards;
 
     &__filter {
@@ -35,7 +34,6 @@ $bgcolor: #efedcf;
         width: 250px;
         margin: 50px;
         background-color: #efedcf;
-        font-family: "Open Sans", sans-serif;
         border-radius: 5px;
         border: 1px solid black;
     }
