@@ -1,19 +1,19 @@
 .success {
-    display: flex;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-    width: 150px;
-    height: 50px;
-    font-family: "Open Sans", sans-serif;
-    background-color: #7FCD51;
-    font-weight: 500;
-    color: #fff;
-    border-radius: 10px;
-    top: 90%;
-    left: 1%;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 50px;
+  font-family: "Open Sans", sans-serif;
+  background-color: #7fcd51;
+  font-weight: 500;
+  color: #fff;
+  border-radius: 10px;
+  top: 90%;
+  left: 1%;
 
-    &__text {
-        font-size: 18px;
-    }
+  &__text {
+    font-size: 18px;
+  }
 }

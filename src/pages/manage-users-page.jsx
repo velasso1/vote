@@ -2,7 +2,7 @@ import React from "react";
 import Managing from "../components/ui/managing";
 
 const ManageUsersPage = () => {
-  return <Managing/>;
+  return <Managing />;
 };
 
 export default ManageUsersPage;

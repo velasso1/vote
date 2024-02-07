@@ -1,10 +1,8 @@
-import React from 'react';
-import EditUser from '../components/ui/edit-user';
+import React from "react";
+import EditUser from "../components/ui/edit-user";
 
 const EditUserPage = () => {
-    return (
-        <EditUser/>
-    )
-}
+  return <EditUser />;
+};
 
 export default EditUserPage;

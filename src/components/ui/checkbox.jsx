@@ -37,7 +37,7 @@ const Checkbox = ({ name, text, checked, setChecked }) => {
         name={name}
         checked={checked[`${name}`]}
         onChange={(e) => setCheckbox(e.target.name)}
-      />{" "}
+      />
     </>
   );
 };

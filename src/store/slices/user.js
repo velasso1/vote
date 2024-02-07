@@ -24,7 +24,7 @@ const user = createSlice({
 
     userToEdit(state, action) {
       state.userData = action.payload;
-    }
+    },
   },
 });
 
@@ -73,13 +73,13 @@ export const deleteUser = (id) => {
     // } catch (error) {
     //   console.error(error.message);
     // }
-  }
-}
+  };
+};
 
 // add => body, token here
-export const updateUserData = (id) => {
+export const updateUserData = (body) => {
   return () => {
-    console.log(id);
+    console.log(body);
     // try {
     //   fetch("API/:id", {
     //     method: "PUT",
@@ -89,8 +89,23 @@ export const updateUserData = (id) => {
     // } catch (error) {
     //   console.error(error.message);
     // }
-  }
-}
+  };
+};
+
+export const makeChoice = (body, token) => {
+  return () => {
+    console.log(body);
+    // try {
+    //   fetch("API", {
+    //     method: "POST",
+    //     headers: {"Content-Type": "application/json", "X-access-token": `${token}`},
+    //     body: JSON.stringify(body),
+    //   })
+    // } catch (error) {
+    //   console.error(error.message);
+    // }
+  };
+};
 
 export const { setUser, removeUser, userToEdit } = user.actions;
 

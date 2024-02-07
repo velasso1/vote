@@ -3,8 +3,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { createNewUser } from "../../store/slices/user";
 import hide from "../../images/hide-pass.svg";
 import Success from "../modals/success";
+import { useNavigate } from "react-router-dom";
+import Loader from "./loader";
 
 const CreateUser = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [userData, setUserData] = useState({
     login: "",
     password: "",
@@ -17,8 +22,6 @@ const CreateUser = () => {
   });
 
   const [hidePassword, setHidePassword] = useState(true);
-
-  const dispatch = useDispatch();
 
   const createUser = () => {
     if (userData.login.length === 0 || userData.password.length === 0) {
@@ -36,7 +39,8 @@ const CreateUser = () => {
     setTimeout(() => {
       setUserData({ login: "", password: "" });
       setState({ error: false, empty: false, sending: false });
-    }, 3000);
+      navigate("/manage");
+    }, 2200);
   };
 
   return (
@@ -119,7 +123,11 @@ const CreateUser = () => {
           <span style={{ color: "red" }}>Все поля должны быть заполнены</span>
         )}
       </div>
-      {state.sending && <Success />}
+      {state.sending && (
+        <>
+          <Success /> <Loader />
+        </>
+      )}
     </div>
   );
 };

@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { createEvent } from "../../store/slices/events";
+import { useNavigate } from "react-router-dom";
+import Loader from "./loader";
+
 import config from "../../auxuliary.json";
 
 const CreateEvent = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [allPeoples, setAllPeoples] = useState([...config.peoples]);
   const [votedPeoples, setVotedPeoples] = useState([]);
@@ -12,7 +16,7 @@ const CreateEvent = () => {
   const [state, setState] = useState({
     error: false,
     empty: false,
-    sending: false
+    sending: false,
   });
 
   const [eventInfo, setEventInfo] = useState({
@@ -20,69 +24,86 @@ const CreateEvent = () => {
     description: "",
     dateCreated: "",
     numberOfVotes: "",
-    // votedPeoples: '',
+    votingUsers: [],
   });
 
   const validate = () => {
-    setState({error: false, empty: false});
+    setState({ error: false, empty: false });
 
     for (let key in eventInfo) {
-      if (eventInfo[key] === '') {
-        setState({...state, empty: true});
+      if (eventInfo[key] === "") {
+        setState({ ...state, empty: true });
         return;
       }
     }
 
     if (+eventInfo.numberOfVotes !== +votedPeoples.length) {
-      setState({error: true, empty: false}); 
+      setState({ error: true, empty: false });
       return;
     }
-    
+
     sendData();
-  }
+  };
 
   const choosePeople = (id) => {
-    setVotedPeoples([...votedPeoples, ...allPeoples.filter((item) => item.id === id)]);
+    // ids for fetch
+    setEventInfo({
+      ...eventInfo,
+      votingUsers: [
+        ...eventInfo.votingUsers,
+        allPeoples.filter((item) => item.id === id)[0].id,
+      ],
+    });
+    // peoples for visualization on display
+    setVotedPeoples([
+      ...votedPeoples,
+      ...allPeoples.filter((item) => item.id === id),
+    ]);
     setAllPeoples(allPeoples.filter((item) => item.id !== id));
   };
 
   const deletePeople = (id) => {
-    setAllPeoples([...allPeoples, ...votedPeoples.filter((item) => item.id === id)])
+    setAllPeoples([
+      ...allPeoples,
+      ...votedPeoples.filter((item) => item.id === id),
+    ]);
     setVotedPeoples(votedPeoples.filter((item) => item.id !== id));
-  }
+  };
 
   const sendData = () => {
     dispatch(createEvent(eventInfo));
     setState({ ...state, sending: true });
-    // dateCreated reset ????
     setTimeout(() => {
       setEventInfo({
-        ...eventInfo,    
+        ...eventInfo,
         name: "",
         description: "",
-        // dateCreated: "",
+        dateCreated: "",
         numberOfVotes: "",
-        // votedPeoples: '',
-    });
+        votedPeoples: [],
+      });
       setVotedPeoples([]);
       setState({ error: false, empty: false, sending: false });
-    }, 3000);
-  }
+      navigate("/events");
+    }, 2200);
+  };
 
   return (
     <div className="create-event">
       <h1 className="create-event__title">Создание нового события</h1>
-        {state.empty && (
-          <span className="create-event__clue">
-            *Все поля должны быть заполнены
-          </span>
-        )}
+      {state.empty && (
+        <span className="create-event__clue">
+          *Все поля должны быть заполнены
+        </span>
+      )}
       <div className="create-event__info">
         <label htmlFor="name">Введите название события</label>
         <input
           disabled={state.sending}
-          style={{borderColor: state.empty && eventInfo.name === '' ? "red" : "black"}}
-          onChange={(e) => setEventInfo({...eventInfo, name: e.target.value})}
+          style={{
+            borderColor: state.empty && eventInfo.name === "" ? "red" : "black",
+          }}
+          onChange={(e) => setEventInfo({ ...eventInfo, name: e.target.value })}
           value={eventInfo.name}
           className="create-event__name"
           type="text"
@@ -93,8 +114,13 @@ const CreateEvent = () => {
         <label htmlFor="description">Введите описание события</label>
         <textarea
           disabled={state.sending}
-          style={{borderColor: state.empty && eventInfo.description === '' ? "red" : "black"}}
-          onChange={(e) => setEventInfo({...eventInfo, description: e.target.value})}
+          style={{
+            borderColor:
+              state.empty && eventInfo.description === "" ? "red" : "black",
+          }}
+          onChange={(e) =>
+            setEventInfo({ ...eventInfo, description: e.target.value })
+          }
           value={eventInfo.description}
           className="create-event__description"
           name="description"
@@ -104,25 +130,38 @@ const CreateEvent = () => {
         <label htmlFor="quantity">Введите количество голосующих</label>
         <input
           disabled={state.sending}
-          onChange={(e) => setEventInfo({...eventInfo, numberOfVotes: e.target.value})}
+          style={{
+            borderColor:
+              state.empty && eventInfo.numberOfVotes === "" ? "red" : "black",
+          }}
+          onChange={(e) =>
+            setEventInfo({ ...eventInfo, numberOfVotes: e.target.value })
+          }
           value={eventInfo.numberOfVotes}
           className="create-event__quantity"
           type="number"
           min={0}
           name="quantity"
           placeholder="Введите количество"
-        /> 
+        />
         {state.error && (
           <span className="create-event__clue">
             *Введенное количество не совпадает с количеством выбранных людей
           </span>
         )}
 
-        {eventInfo.dateCreated === '' &&  <span className="create-event__clue">
-            Укажите дату голосования
-          </span>}
+        {eventInfo.dateCreated === "" && (
+          <span className="create-event__clue">Укажите дату голосования</span>
+        )}
 
-        <input disabled={state.sending} className="create-event__date" type="date" onChange={(e) => setEventInfo({...eventInfo, dateCreated: e.target.value})} />
+        <input
+          disabled={state.sending}
+          className="create-event__date"
+          type="date"
+          onChange={(e) =>
+            setEventInfo({ ...eventInfo, dateCreated: e.target.value })
+          }
+        />
       </div>
       <div className="create-event__peoples">
         <div className="create-event__left">
@@ -131,7 +170,11 @@ const CreateEvent = () => {
             {votedPeoples.length !== 0 ? (
               votedPeoples.map((item, index) => {
                 return (
-                  <li className="create-event__item" key={index} onClick={() => deletePeople(item.id)}>
+                  <li
+                    className="create-event__item"
+                    key={index}
+                    onClick={() => deletePeople(item.id)}
+                  >
                     {item.login}
                   </li>
                 );
@@ -144,7 +187,7 @@ const CreateEvent = () => {
 
         <div className="create-event__right">
           <span className="create-event__subtitle">Все люди</span>
-          <ul className="create-event__all" >
+          <ul className="create-event__all">
             {allPeoples.map((item, index) => {
               return (
                 <li
@@ -161,9 +204,18 @@ const CreateEvent = () => {
       </div>
 
       <div className="create-event__buttons">
-        <button disabled={state.sending} className="create-event__button" onClick={() => validate()}>Создать событие</button>
-        <button disabled={state.sending} className="create-event__button">Очистить форму</button>
+        <button
+          disabled={state.sending}
+          className="create-event__button"
+          onClick={() => validate()}
+        >
+          Создать событие
+        </button>
+        <button disabled={state.sending} className="create-event__button">
+          Очистить форму
+        </button>
       </div>
+      {state.sending && <Loader />}
     </div>
   );
 };

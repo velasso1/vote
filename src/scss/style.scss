@@ -18,8 +18,17 @@
 @import "success.scss";
 @import "confirm-action.scss";
 @import "managing.scss";
+@import "loader.scss";
+@import "edit-user.scss";
 // ============================================
 
 body {
-    font-family: "Open Sans", sans-serif;
+  font-family: "Open Sans", sans-serif;
+}
+
+button:disabled,
+input:disabled,
+textarea:disabled {
+  opacity: 40%;
+  cursor: not-allowed;
 }

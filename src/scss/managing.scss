@@ -1,47 +1,47 @@
 .managing {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: create-event 1s forwards;
+
+  &__title {
+    margin: 30px 0;
+  }
+
+  &__list {
+    list-style: none;
+    width: 500px;
+    border: 1px solid black;
+    border-bottom: none;
     text-align: center;
-    align-items: center;
-    animation: create-event 1s forwards;
+  }
 
-    &__title {
-        margin: 30px 0;
-    }
+  &__item {
+    background-color: #fff;
+    transition: 0.3s;
+  }
 
-    &__list {
-        list-style: none;
-        width: 500px;
-        border: 1px solid black;
-        border-bottom: none;
-    }
+  &__item:nth-child(odd) {
+    background-color: #ccc;
+  }
 
-    &__item {
-        background-color: #fff;
-        transition: .3s;
-    }
+  &__item:hover {
+    background-color: #7fcd51;
+    cursor: pointer;
+  }
 
-    &__item:nth-child(odd) {
-        background-color: #ccc;
-    }
+  &__edit,
+  &__delete {
+    transition: 0.3s;
+  }
 
-    &__item:hover {
-        background-color: #7FCD51;
-        cursor: pointer;
-    }
+  &__edit:hover {
+    background-color: #17155c;
+    color: #fff;
+  }
 
-    &__edit, 
-    &__delete {
-        transition: .3s;
-    }
-
-    &__edit:hover {
-        background-color: #17155c;
-        color: #fff;
-    }
-
-    &__delete:hover {
-        background-color: tomato;
-    }
+  &__delete:hover {
+    background-color: tomato;
+  }
 }

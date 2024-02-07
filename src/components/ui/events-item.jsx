@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { deleteEvent } from "../../store/slices/events";
 import TrashBin from "./trash-bin";
 import ConfirmAction from "../modals/confirm-action";
 
@@ -22,7 +23,13 @@ const EventsItem = ({ id, name, description, date, status }) => {
 
   return (
     <>
-      {confirm && <ConfirmAction id={id} setConfirm={setConfirm} />}
+      {confirm && (
+        <ConfirmAction
+          id={id}
+          setConfirm={setConfirm}
+          deleteAction={deleteEvent}
+        />
+      )}
       <div
         className="events__item"
         onClick={(e) => openEvent(e.target.tagName)}

@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom";
 const PrivateRoute = ({ children }) => {
   const auth = useSelector((state) => state.user.isAuth);
 
-  const { a } = useParams();
-  console.log(a);
+  // const { a } = useParams();
+  // console.log(a);
 
   return auth ? children : <Navigate to="/" />;
 };

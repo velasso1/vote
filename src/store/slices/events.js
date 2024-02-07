@@ -7,10 +7,30 @@ const initialState = {
 const events = createSlice({
   name: "events",
   initialState,
-  reducers: {},
+  reducers: {
+    eventsReceived(state, action) {
+      state.events = action.payload.events;
+    },
+  },
 });
 
 // Actions
+
+export const getEvents = () => {
+  return (dispatch) => {
+    setTimeout(() => {
+      try {
+        fetch("http://localhost:3000/auxuliary.json").then((resp) => {
+          resp.json().then((data) => {
+            dispatch(eventsReceived(data));
+          });
+        });
+      } catch (error) {
+        console.error(error.message);
+      }
+    }, 3000);
+  };
+};
 
 export const createEvent = (body, token) => {
   return () => {
@@ -27,8 +47,8 @@ export const createEvent = (body, token) => {
     // } catch (error) {
     //    console.error(error.message);
     // }
-  }
-}
+  };
+};
 
 export const deleteEvent = (id) => {
   return () => {
@@ -46,5 +66,7 @@ export const deleteEvent = (id) => {
     // }
   };
 };
+
+export const { eventsReceived } = events.actions;
 
 export default events.reducer;
