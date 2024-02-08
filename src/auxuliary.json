@@ -87,14 +87,59 @@
     { "name": "closed", "text": "Закрытые" }
   ],
   "peoples": [
-    { "id": "0", "login": "Иванов" },
-    { "id": "1", "login": "Петров" },
-    { "id": "2", "login": "Сидоров" },
-    { "id": "3", "login": "Сергиенко" },
-    { "id": "4", "login": "Цыпкайкин" },
-    { "id": "5", "login": "Смирнов" },
-    { "id": "6", "login": "Коньков" },
-    { "id": "7", "login": "Приходько" },
-    { "id": "8", "login": "Бурлаков" }
+    { "id": "0", "login": "Ivanov", "surname": "Иванов", "name": "Иван" },
+    { "id": "1", "login": "Petrov", "surname": "Петров", "name": "Геннадий" },
+    { "id": "2", "login": "Sidorov", "surname": "Сидоров", "name": "Евгений" },
+    {
+      "id": "3",
+      "login": "Sergienko",
+      "surname": "Сергиенко",
+      "name": "Артем"
+    },
+    {
+      "id": "4",
+      "login": "Cypkaikin",
+      "surname": "Цыпкайкин",
+      "name": "Александр"
+    },
+    {
+      "id": "5",
+      "login": "Smirnov",
+      "surname": "Смирнов",
+      "name": "Владислав"
+    },
+    { "id": "6", "login": "Konkov", "surname": "Коньков", "name": "Владимир" },
+    {
+      "id": "7",
+      "login": "Prikhodko",
+      "surname": "Приходько",
+      "name": "Тарас"
+    },
+    { "id": "8", "login": "Burlakov", "surname": "Бурлаков", "name": "Алексей" }
+  ],
+  "textFieldsUser": [
+    { "id": "login", "text": "Введите логин" },
+    { "id": "name", "text": "Введите имя" },
+    { "id": "surname", "text": "Введите фамилию" },
+    { "id": "password", "text": "Введите пароль" }
+  ],
+
+  "editUserFields": [
+    {
+      "placeholder": "Введите логин",
+      "className": "login"
+    },
+    {
+      "placeholder": "Введите имя",
+      "className": "name"
+    },
+    {
+      "placeholder": "Введите фамилию",
+      "className": "surname"
+    },
+    {
+      "placeholder": "Введите пароль",
+      "className": "password"
+    }
   ]
 }

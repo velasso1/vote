@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { createNewUser } from "../../store/slices/user";
-import hide from "../../images/hide-pass.svg";
+import hideIcon from "../../images/hide-pass.svg";
 import Success from "../modals/success";
 import { useNavigate } from "react-router-dom";
 import Loader from "./loader";
+import TextField from "../fields/text-field";
+
+import config from "../../auxuliary.json";
 
 const CreateUser = () => {
   const dispatch = useDispatch();
@@ -12,6 +15,8 @@ const CreateUser = () => {
 
   const [userData, setUserData] = useState({
     login: "",
+    name: "",
+    surname: "",
     password: "",
   });
 
@@ -25,7 +30,7 @@ const CreateUser = () => {
 
   const createUser = () => {
     if (userData.login.length === 0 || userData.password.length === 0) {
-      setState({ error: false, empty: true });
+      setState({ ...state, error: false, empty: true });
       return;
     }
 
@@ -44,45 +49,27 @@ const CreateUser = () => {
   };
 
   return (
-    <div className="create-user" style={{ opacity: 0.9 }}>
+    <div className="create-user">
       <h1 className="create-user__title">Создание новой учетной записи</h1>
       <div className="create-event__info">
-        <label htmlFor="login">Придумайте новый логин</label>
-        <input
-          disabled={state.sending}
-          id="login"
-          className="create-user__login"
-          type="text"
-          placeholder="Придумайте логин"
-          value={userData.login}
-          onChange={(e) =>
-            setUserData({ ...userData, login: e.target.value.trim() })
-          }
-          style={{
-            borderColor:
-              state.empty && userData.login.length === 0 ? "red" : "black",
-          }}
-        />
-        <label htmlFor="password">Придумайте новый пароль</label>
+        {config.textFieldsUser.map((item, index) => {
+          return (
+            <TextField
+              key={index}
+              disabled={state.sending}
+              state={state}
+              userData={userData}
+              hide={hidePassword}
+              setUserData={setUserData}
+              id={item.id}
+              text={item.text}
+            />
+          );
+        })}
         <div className="password-box">
-          <input
-            disabled={state.sending}
-            id="password"
-            type={hidePassword ? "password" : "text"}
-            className="create-user__password"
-            placeholder="Придумайте пароль"
-            value={userData.password}
-            onChange={(e) =>
-              setUserData({ ...userData, password: e.target.value.trim() })
-            }
-            style={{
-              borderColor:
-                state.empty && userData.password.length === 0 ? "red" : "black",
-            }}
-          />
           <img
             className="create-user__icon"
-            src={hide}
+            src={hideIcon}
             alt="hide pass"
             onClick={() => setHidePassword(!hidePassword)}
           />
@@ -107,7 +94,7 @@ const CreateUser = () => {
           disabled={state.sending}
           className="create-user__button"
           onClick={() => {
-            setUserData({ login: "", password: "" });
+            setUserData({ login: "", password: "", name: "", surname: "" });
             setState({ ...state, error: false, empty: false });
           }}
         >
