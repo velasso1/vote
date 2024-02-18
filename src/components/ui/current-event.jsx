@@ -1,27 +1,31 @@
-import React, { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AcceptedVote from "../modals/accepted-vote";
 import { makeChoice } from "../../store/slices/user";
-
-import config from "../../auxuliary.json";
+import { getCurrentEvent } from "../../store/slices/events";
+import { checkVoiting } from "../../store/slices/user";
 
 const CurrentEvent = () => {
+  const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const [voted, setVoted] = useState({
     voted: false,
     accept: false,
     denied: false,
   });
-  const { isAdmin, userId } = useSelector((state) => state.user);
-  const eventData = useSelector((state) => state.events.events);
-  // const location = useLocation();
-  const dispatch = useDispatch();
   const params = useParams();
 
-  const data = eventData.filter((item) => {
-    return item.id === params.id;
-  });
+  const { isAdmin, userId } = useSelector((state) => state.user);
+  const { currentEvent } = useSelector((state) => state.events);
+
+  useEffect(() => {
+    dispatch(getCurrentEvent(params.id));
+  }, [dispatch, params.id]);
+
+  useEffect(() => {
+    dispatch(checkVoiting(params.id, localStorage.getItem("uid")));
+  }, [dispatch, params.id, userId]);
 
   const voteFor = (target) => {
     if (target.tagName !== "BUTTON") return;
@@ -34,7 +38,7 @@ const CurrentEvent = () => {
       dispatch(
         makeChoice({
           idEvent: params.id,
-          userId: 3,
+          userId: userId,
           accepted: true,
           denied: false,
         })
@@ -45,7 +49,7 @@ const CurrentEvent = () => {
     dispatch(
       makeChoice({
         idEvent: params.id,
-        userId: 3,
+        userId: userId,
         accepted: false,
         denied: true,
       })
@@ -56,10 +60,12 @@ const CurrentEvent = () => {
     <>
       {openModal && <AcceptedVote />}
       <div className="current-event">
-        <div className="current-event__name">{data[0].name}</div>
-        <div className="current-event__description">{data[0].description}</div>
-        {/* <div className="current-event__date">{data[0].dateOfCreate}</div> */}
-        {data[0].status === "true" ? (
+        <div className="current-event__name">{currentEvent.name}</div>
+        <div className="current-event__description">
+          {currentEvent.description}
+        </div>
+        <div className="current-event__date">{currentEvent.dateOfCreate}</div>
+        {currentEvent.isFinished === "true" ? (
           <div
             className="current-event__buttons"
             onClick={(e) => voteFor(e.target)}
@@ -91,15 +97,19 @@ const CurrentEvent = () => {
             <tbody>
               <tr>
                 <td>Количество ЗА</td>
-                <td>{data[0].accepted}</td>
+                <td>{currentEvent.accepted}</td>
               </tr>
               <tr>
                 <td>Количество ПРОТИВ</td>
-                <td>{data[0].denied}</td>
+                <td>{currentEvent.denied}</td>
               </tr>
-              <tr>
+              {/* <tr>
                 <td>Количество проголосовавших</td>
-                <td>{data[0].numberOfVotes}</td>
+                <td>{currentEvent.accepted + currentEvent.denied}</td>
+              </tr> */}
+              <tr>
+                <td>Нужное количество голосов</td>
+                <td>{currentEvent.numberOfVotes}</td>
               </tr>
             </tbody>
           </table>

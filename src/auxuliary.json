@@ -119,8 +119,6 @@
   ],
   "textFieldsUser": [
     { "id": "login", "text": "Введите логин" },
-    { "id": "name", "text": "Введите имя" },
-    { "id": "surname", "text": "Введите фамилию" },
     { "id": "password", "text": "Введите пароль" }
   ],
 
@@ -128,14 +126,6 @@
     {
       "placeholder": "Введите логин",
       "className": "login"
-    },
-    {
-      "placeholder": "Введите имя",
-      "className": "name"
-    },
-    {
-      "placeholder": "Введите фамилию",
-      "className": "surname"
     },
     {
       "placeholder": "Введите пароль",

@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { removeUser } from "../../store/slices/user";
+import { signOut } from "../../store/slices/user";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -9,8 +9,8 @@ const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const signOut = () => {
-    dispatch(removeUser());
+  const signOutFromAcc = () => {
+    dispatch(signOut());
   };
   return (
     <header className="header">
@@ -46,7 +46,7 @@ const Header = () => {
             <NavLink
               className="header__menu-item"
               to="/"
-              onClick={() => signOut()}
+              onClick={() => signOutFromAcc()}
             >
               выйти
             </NavLink>

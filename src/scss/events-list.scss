@@ -121,6 +121,11 @@ $bgcolor: #efedcf;
   &__desc {
     margin-right: 10px;
   }
+  
+  &__empty {
+    margin-top: 50px;
+    font-size: 20px;
+  }
 
   &__name:first-letter,
   &__description:first-letter {

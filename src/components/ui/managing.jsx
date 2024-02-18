@@ -1,26 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { userToEdit } from "../../store/slices/user";
-import { deleteUser } from "../../store/slices/user";
+import { useDispatch, useSelector } from "react-redux";
+import { userToEdit } from "../../store/slices/accounts";
+import { deleteUser } from "../../store/slices/accounts";
+import { getAllAccs } from "../../store/slices/accounts";
 import ConfirmAction from "../modals/confirm-action";
-
-import config from "../../auxuliary.json";
 
 const Managing = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { accounts } = useSelector((state) => state.accounts);
   const [confirm, setOpenConfirm] = useState(false);
   // id deleting user for props in ConfirmAction
   const [id, setId] = useState(null);
 
+  useEffect(() => {
+    dispatch(getAllAccs());
+  }, [dispatch]);
+
   const editUserData = (user) => {
-    navigate(`/edit-user/${user.id}`);
+    navigate(`/edit-user/${user._id}`);
     dispatch(userToEdit(user));
   };
 
-  const deleteUserData = ({ id }) => {
+  const deleteAccount = (id) => {
     setId(id);
     setOpenConfirm(true);
   };
@@ -43,25 +46,31 @@ const Managing = () => {
                 <th>Учетные записи</th>
                 <th colSpan={2}>Действие</th>
               </tr>
-              {config.peoples.map((item, index) => {
-                return (
-                  <tr className="managing__item" key={index}>
-                    <td>{item.login}</td>
-                    <td
-                      className="managing__edit"
-                      onClick={() => editUserData(item)}
-                    >
-                      Редактировать
-                    </td>
-                    <td
-                      className="managing__delete"
-                      onClick={() => deleteUserData(item)}
-                    >
-                      Удалить
-                    </td>
-                  </tr>
-                );
-              })}
+              {accounts.length ? (
+                accounts.map((item, index) => {
+                  return item.login !== "admin" && accounts.length ? (
+                    <tr className="managing__item" key={index}>
+                      <td>{item.login}</td>
+                      <td
+                        className="managing__edit"
+                        onClick={() => editUserData(item)}
+                      >
+                        Редактировать
+                      </td>
+                      <td
+                        className="managing__delete"
+                        onClick={() => deleteAccount(item._id)}
+                      >
+                        Удалить
+                      </td>
+                    </tr>
+                  ) : null;
+                })
+              ) : (
+                <tr>
+                  <td colSpan={2}>Пусто</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

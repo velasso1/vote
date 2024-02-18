@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserData } from "../../store/slices/user";
+import { updateUserData } from "../../store/slices/accounts";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import EditTextField from "../fields/edit-text-filed";
 import Success from "../modals/success";
 import config from "../../auxuliary.json";
 
 const EditUser = () => {
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user.userData);
+  const { dataForUpdate, sendingStatus } = useSelector(
+    (state) => state.accounts
+  );
   const navigate = useNavigate();
+  const params = useParams();
 
   const [state, setState] = useState({
     error: false,
@@ -18,24 +22,23 @@ const EditUser = () => {
   });
 
   const [userInfo, setUserInfo] = useState({
-    login: userData.login,
-    name: userData.name,
-    surname: userData.surname,
+    login: dataForUpdate.login,
     password: "",
   });
 
   const updateInfo = () => {
-    dispatch(updateUserData(userInfo));
+    dispatch(updateUserData(userInfo, params.id));
     setState({ ...state, sending: true });
 
     setTimeout(() => {
-      setState({ ...state, sending: false });
+      // setState({ ...state, sending: false });
       navigate("/manage");
     }, 2200);
   };
 
   return (
     <div className="edit-user">
+      {sendingStatus && <Success />}
       <h1 className="edit-user__title">Редактирование учетной записи</h1>
       <div className="edit-user__info">
         {config.editUserFields.map((item, index) => {
@@ -60,15 +63,6 @@ const EditUser = () => {
           onClick={() => updateInfo()}
         >
           Сохранить
-        </button>
-        <button
-          disabled={state.sending}
-          className="edit-user__button"
-          onClick={() =>
-            setUserInfo({ login: "", password: "", name: "", surname: "" })
-          }
-        >
-          Отмена
         </button>
       </div>
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { createNewUser } from "../../store/slices/user";
+import { useDispatch } from "react-redux";
+import { createNewUser } from "../../store/slices/accounts";
 import hideIcon from "../../images/hide-pass.svg";
 import Success from "../modals/success";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +15,8 @@ const CreateUser = () => {
 
   const [userData, setUserData] = useState({
     login: "",
-    name: "",
-    surname: "",
+    // name: "",
+    // surname: "",
     password: "",
   });
 
@@ -29,6 +29,7 @@ const CreateUser = () => {
   const [hidePassword, setHidePassword] = useState(true);
 
   const createUser = () => {
+    console.log(userData);
     if (userData.login.length === 0 || userData.password.length === 0) {
       setState({ ...state, error: false, empty: true });
       return;

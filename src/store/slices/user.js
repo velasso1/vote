@@ -2,11 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   login: null,
-  token: null,
-  userId: 3252359,
+  userId: null,
   isAuth: false,
-  isAdmin: true,
-  userData: null,
+  isAdmin: false,
+  error: "",
+  statusLoading: false,
 };
 
 const user = createSlice({
@@ -15,17 +15,34 @@ const user = createSlice({
   reducers: {
     setUser(state, action) {
       state.login = action.payload.login;
-      state.isAuth = action.payload.login && action.payload.password; // in prod this change
+    },
+
+    checkExpiresToken(state) {
+      state.isAuth = +localStorage.getItem("expiresIn") > new Date().getTime();
+      state.isAdmin =
+        localStorage.getItem("uid") === "65d1b16009ba9b4dbee1ded7";
+    },
+
+    setError(state, action) {
+      state.error = action.payload;
+    },
+
+    setAuth(state, action) {
       state.userId = action.payload.userId;
+      state.isAuth = !!action.payload.token.accessToken;
+      state.isAdmin = state.userId = "65d1b16009ba9b4dbee1ded7";
     },
 
-    removeUser(state) {
-      state.login = null;
+    setStatus(state, action) {
+      state.statusLoading = action.payload;
+    },
+
+    signOut(state) {
+      state.login = "";
       state.isAuth = false;
-    },
-
-    userToEdit(state, action) {
-      state.userData = action.payload;
+      state.isAdmin = false;
+      localStorage.removeItem("token");
+      localStorage.removeItem("expiresIn");
     },
   },
 });
@@ -33,64 +50,34 @@ const user = createSlice({
 // Actions
 
 export const signIn = (body) => {
-  return () => {
-    // console.log(body);
-    // try {
-    //   fetch("PUT ADDRESS HERE", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify(body),
-    //   });
-    // } catch (e) {
-    //   console.error(e.message);
-    // }
-  };
-};
-
-export const createNewUser = (body) => {
-  return () => {
-    // try {
-    //   fetch("API", {
-    //     method: "POST",
-    //     headers: { "Contnet-Type": "appliction/json" },
-    //     body: JSON.stringify(body),
-    //   });
-    // } catch (err) {
-    //   console.error(err.message);
-    // }
-  };
-};
-
-// add token here
-export const deleteUser = (id) => {
-  return () => {
-    console.log(id);
-    // try {
-    //   fetch("API/:id", {
-    //     method: "DELETE",
-    //     headers: {
-    //       "X-access-token": `${token}`
-    //     }
-    //   })
-    // } catch (error) {
-    //   console.error(error.message);
-    // }
-  };
-};
-
-// add => body, token here
-export const updateUserData = (body) => {
-  return () => {
-    console.log(body);
-    // try {
-    //   fetch("API/:id", {
-    //     method: "PUT",
-    //     headers: {"Content-Type": "application/json", "X-access-token": `${token}`},
-    //     body: JSON.stringify(body)
-    //   })
-    // } catch (error) {
-    //   console.error(error.message);
-    // }
+  return async (dispatch) => {
+    try {
+      dispatch(setStatus(true));
+      await fetch(
+        `http://localhost:3000${process.env.REACT_APP_SIGN_IN_ROUTE}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      ).then((resp) =>
+        resp.json().then((data) => {
+          if (data.token) {
+            localStorage.setItem("uid", data.userId);
+            localStorage.setItem("token", data.token.accessToken);
+            localStorage.setItem(
+              "expiresIn",
+              new Date().getTime() + data.token.expiresIn
+            );
+            dispatch(setAuth(data));
+          }
+          dispatch(setError(data.error));
+          dispatch(setStatus(false));
+        })
+      );
+    } catch (err) {
+      console.error(`${err}`);
+    }
   };
 };
 
@@ -109,6 +96,35 @@ export const makeChoice = (body, token) => {
   };
 };
 
-export const { setUser, removeUser, userToEdit } = user.actions;
+export const checkVoiting = (id, uid) => {
+  return async () => {
+    console.log(JSON.stringify({ userId: `${uid}` }));
+    try {
+      await fetch(
+        `http://localhost:3000${process.env.REACT_APP_CHECK_VOICE}${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer: ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ userId: `${uid}` }),
+        }
+      ).then((resp) => resp.json().then((data) => console.log(data)));
+    } catch (error) {
+      console.error(`${error}`);
+    }
+  };
+};
+
+export const {
+  setUser,
+  removeUser,
+  checkExpiresToken,
+  setError,
+  setAuth,
+  signOut,
+  setStatus,
+} = user.actions;
 
 export default user.reducer;

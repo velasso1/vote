@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../store/slices/user";
 import { setUser } from "../store/slices/user";
 import { useNavigate } from "react-router-dom";
+import { checkExpiresToken } from "../store/slices/user";
+import Loader from "../components/ui/loader";
 
 const LoginPage = () => {
   const [userData, setUserData] = useState({
@@ -10,25 +12,26 @@ const LoginPage = () => {
     password: "",
   });
   const [state, setState] = useState({
-    error: false,
     empty: false,
   });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { error, isAuth, statusLoading } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(checkExpiresToken());
+
+    if (isAuth) navigate("/events");
+  }, [isAuth, dispatch, navigate]);
+
   const enter = (e) => {
     e.preventDefault();
+    setState({ empty: false });
 
-    // check for empty inputs
     if (!userData.login || !userData.password) {
-      setState({ ...state, empty: true });
-      return;
-    }
-
-    // simulate check for wrong login or password
-    if (userData.login.length <= 0 || userData.password.length <= 0) {
-      setState({ ...state, error: true });
+      setState({ empty: true });
       return;
     }
 
@@ -36,14 +39,15 @@ const LoginPage = () => {
     dispatch(
       setUser({ login: `${userData.login}`, password: `${userData.password}` })
     );
-    navigate("/events");
   };
 
   return (
     <>
       <div className="login">
+        {statusLoading && <Loader />}
         <form onSubmit={(e) => enter(e)} className="login__form">
           <input
+            disabled={statusLoading}
             className="login__input"
             placeholder="Введите логин"
             value={userData.login}
@@ -52,6 +56,7 @@ const LoginPage = () => {
             }
           />
           <input
+            disabled={statusLoading}
             className="login__input"
             placeholder="Введите пароль"
             value={userData.password}
@@ -60,8 +65,10 @@ const LoginPage = () => {
             }
             type="password"
           />
-          <button className="login__button">Войти</button>
-          {state.error && (
+          <button disabled={statusLoading} className="login__button">
+            Войти
+          </button>
+          {error && (
             <div
               className="login__error"
               style={{ textAlign: "center", color: "red" }}

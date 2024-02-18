@@ -22,7 +22,7 @@ const EventsList = () => {
   const { isAdmin } = useSelector((state) => state.user);
   const target = useSelector((state) => state.checkbox.target);
 
-  const newEvents = useSelector((state) => state.events.events);
+  const { events, sendingStatus } = useSelector((state) => state.events);
 
   useEffect(() => {
     dispatch(changeTarget(""));
@@ -31,9 +31,9 @@ const EventsList = () => {
 
   let newData =
     target === ""
-      ? newEvents
-      : newEvents.filter((item) => {
-          return item.status === `${target}`;
+      ? events
+      : events.filter((item) => {
+          return item.isFinished !== target;
         });
 
   return (
@@ -82,17 +82,22 @@ const EventsList = () => {
               return (
                 <EventsItem
                   key={index}
-                  id={item.id}
+                  id={item._id}
                   name={item.name}
                   description={item.description}
                   date={item.dateOfCreate}
-                  status={item.status}
+                  status={item.isFinished}
                 />
               );
             })
           ) : (
-            <Loader />
+            <>
+              {!sendingStatus && (
+                <div className="events__empty">События отсутствуют</div>
+              )}
+            </>
           )}
+          {sendingStatus && <Loader />}
         </div>
       </div>
     </>

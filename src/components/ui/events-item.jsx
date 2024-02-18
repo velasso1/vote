@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteEvent } from "../../store/slices/events";
+import { setIdForDelete } from "../../store/slices/events";
 import TrashBin from "./trash-bin";
 import ConfirmAction from "../modals/confirm-action";
 
 const EventsItem = ({ id, name, description, date, status }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const [confirm, setConfirm] = useState(false);
 
   const openEvent = (tagName) => {
     if (tagName === "svg" || tagName === "path") {
       setConfirm(true);
+      dispatch(setIdForDelete(id));
       return;
     }
 
