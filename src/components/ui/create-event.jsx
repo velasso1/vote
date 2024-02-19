@@ -4,7 +4,7 @@ import { createEvent } from "../../store/slices/events";
 import { useNavigate } from "react-router-dom";
 import { getAllAccs } from "../../store/slices/accounts";
 import Loader from "./loader";
-import Success from "../modals/success";
+// import Success from "../modals/success";
 
 const CreateEvent = () => {
   const dispatch = useDispatch();
@@ -29,6 +29,9 @@ const CreateEvent = () => {
     dateCreated: new Date().getTime(),
     dateEvent: "",
     numberOfVotes: "",
+    isFinished: false,
+    accepted: 0,
+    denied: 0,
     votingUsers: [],
   });
 
@@ -81,22 +84,19 @@ const CreateEvent = () => {
       dateCreated: new Date().getTime(),
       dateEvent: "",
       numberOfVotes: "",
+      isFinished: false,
+      accepted: 0,
+      denied: 0,
       votedPeoples: [],
     });
     setVotedPeoples([]);
     setState({ error: false, empty: false });
-    setTimeout(() => {
-      navigate("/events");
-    }, 1500);
+    navigate("/events");
   };
 
   return (
     <div className="create-event">
-      {sendingStatus && (
-        <>
-          <Loader /> <Success />
-        </>
-      )}
+      {sendingStatus && <Loader />}
       <h1 className="create-event__title">Создание нового события</h1>
       {state.empty && (
         <span className="create-event__clue">

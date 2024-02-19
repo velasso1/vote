@@ -43,7 +43,11 @@ export const getAllAccs = () => {
     try {
       fetch(`http://localhost:3000${process.env.REACT_APP_ALL_ACCOUNTS}`, {
         method: "GET",
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: {
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("uinfo")).token
+          }`,
+        },
       }).then((resp) =>
         resp.json().then((data) => {
           dispatch(accsReceived(data));
@@ -65,7 +69,9 @@ export const updateUserData = (body, id) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer: ${localStorage.getItem("token")}`,
+            Authorization: `Bearer: ${
+              JSON.parse(localStorage.getItem("uinfo")).token
+            }`,
           },
           body: JSON.stringify(body),
         }
@@ -89,7 +95,9 @@ export const deleteUser = (id) => {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer: ${localStorage.getItem("token")}`,
+            Authorization: `Bearer: ${
+              JSON.parse(localStorage.getItem("uinfo")).token
+            }`,
           },
         }
       ).then((resp) =>
@@ -113,7 +121,9 @@ export const createNewUser = (body) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer: ${localStorage.getItem("token")}`,
+            Authorization: `Bearer: ${
+              JSON.parse(localStorage.getItem("uinfo")).token
+            }`,
           },
           body: JSON.stringify(body),
         }

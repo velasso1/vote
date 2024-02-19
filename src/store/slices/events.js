@@ -45,7 +45,9 @@ export const getEvents = () => {
       await fetch(`http://localhost:3000${process.env.REACT_APP_ALL_EVENTS}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("uinfo")).token
+          }`,
         },
       }).then((resp) => {
         resp.json().then((data) => {
@@ -67,7 +69,9 @@ export const createEvent = (body) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("uinfo")).token
+          }`,
         },
         body: JSON.stringify(body),
       });
@@ -86,7 +90,9 @@ export const deleteEvent = (id) => {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${
+              JSON.parse(localStorage.getItem("uinfo")).token
+            }`,
           },
         }
       );
@@ -105,7 +111,9 @@ export const getCurrentEvent = (id) => {
         {
           method: "GET",
           headers: {
-            Authorization: `Bearer: ${localStorage.getItem("token")}`,
+            Authorization: `Bearer: ${
+              JSON.parse(localStorage.getItem("uinfo")).token
+            }`,
           },
         }
       ).then((resp) =>

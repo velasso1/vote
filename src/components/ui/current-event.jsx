@@ -2,30 +2,34 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AcceptedVote from "../modals/accepted-vote";
-import { makeChoice } from "../../store/slices/user";
+import { makeChoice, checkVoiting } from "../../store/slices/user";
 import { getCurrentEvent } from "../../store/slices/events";
-import { checkVoiting } from "../../store/slices/user";
 
 const CurrentEvent = () => {
   const dispatch = useDispatch();
+
+  const { isAdmin, userId } = useSelector((state) => state.user);
+  const { currentEvent } = useSelector((state) => state.events);
+
   const [openModal, setOpenModal] = useState(false);
   const [voted, setVoted] = useState({
     voted: false,
     accept: false,
     denied: false,
+    canVote:
+      currentEvent.votingUsers.length > 0
+        ? currentEvent.votingUsers.includes(userId)
+        : true,
   });
-  const params = useParams();
-
-  const { isAdmin, userId } = useSelector((state) => state.user);
-  const { currentEvent } = useSelector((state) => state.events);
+  const { id } = useParams();
 
   useEffect(() => {
-    dispatch(getCurrentEvent(params.id));
-  }, [dispatch, params.id]);
+    dispatch(checkVoiting(id, userId));
+  }, [dispatch, id, userId]);
 
   useEffect(() => {
-    dispatch(checkVoiting(params.id, localStorage.getItem("uid")));
-  }, [dispatch, params.id, userId]);
+    dispatch(getCurrentEvent(id));
+  }, [dispatch, id]);
 
   const voteFor = (target) => {
     if (target.tagName !== "BUTTON") return;
@@ -37,7 +41,7 @@ const CurrentEvent = () => {
     if (target.name === "sup") {
       dispatch(
         makeChoice({
-          idEvent: params.id,
+          idEvent: id,
           userId: userId,
           accepted: true,
           denied: false,
@@ -48,7 +52,7 @@ const CurrentEvent = () => {
 
     dispatch(
       makeChoice({
-        idEvent: params.id,
+        idEvent: id,
         userId: userId,
         accepted: false,
         denied: true,
@@ -65,12 +69,12 @@ const CurrentEvent = () => {
           {currentEvent.description}
         </div>
         <div className="current-event__date">{currentEvent.dateOfCreate}</div>
-        {currentEvent.isFinished === "true" ? (
+        {!currentEvent.isFinished ? (
           <div
             className="current-event__buttons"
             onClick={(e) => voteFor(e.target)}
           >
-            {voted.voted === true ? (
+            {voted.voted === true && voted.canVote ? (
               <h2 className="current-event__closed">Вы проголосовали</h2>
             ) : (
               <>

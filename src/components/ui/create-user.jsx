@@ -29,7 +29,6 @@ const CreateUser = () => {
   const [hidePassword, setHidePassword] = useState(true);
 
   const createUser = () => {
-    console.log(userData);
     if (userData.login.length === 0 || userData.password.length === 0) {
       setState({ ...state, error: false, empty: true });
       return;

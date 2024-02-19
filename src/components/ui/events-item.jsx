@@ -41,9 +41,9 @@ const EventsItem = ({ id, name, description, date, status }) => {
         <div className="events__date">{date}</div>
         <div
           className="events__status"
-          style={{ color: status === "true" ? "green" : "red" }}
+          style={{ color: status ? "red" : "green" }}
         >
-          Голосование {status === "true" ? "открыто" : "закрыто"}
+          Голосование {status ? "закрыто" : "открыто"}
           {isAdmin && <TrashBin />}
         </div>
       </div>

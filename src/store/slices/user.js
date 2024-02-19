@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import bcrypt from "bcryptjs-react";
 
 const initialState = {
   login: null,
@@ -18,9 +19,11 @@ const user = createSlice({
     },
 
     checkExpiresToken(state) {
-      state.isAuth = +localStorage.getItem("expiresIn") > new Date().getTime();
-      state.isAdmin =
-        localStorage.getItem("uid") === "65d1b16009ba9b4dbee1ded7";
+      const { role, uid, token, expiration } =
+        JSON.parse(localStorage.getItem("uinfo")) || "null";
+      state.isAuth = expiration > new Date().getTime();
+      state.isAdmin = role === "admin";
+      state.userId = uid;
     },
 
     setError(state, action) {
@@ -28,9 +31,23 @@ const user = createSlice({
     },
 
     setAuth(state, action) {
-      state.userId = action.payload.userId;
-      state.isAuth = !!action.payload.token.accessToken;
-      state.isAdmin = state.userId = "65d1b16009ba9b4dbee1ded7";
+      console.log(action.payload);
+      const { userId, token, role } = action.payload;
+      console.log(role);
+      console.log(token.accessToken);
+      state.userId = userId;
+      state.isAuth = !!token.accessToken;
+      state.isAdmin = role === "admin";
+
+      localStorage.setItem(
+        "uinfo",
+        JSON.stringify({
+          uid: userId,
+          token: token.accessToken,
+          expiration: new Date().getTime() + token.expiresIn,
+          role: role,
+        })
+      );
     },
 
     setStatus(state, action) {
@@ -41,8 +58,7 @@ const user = createSlice({
       state.login = "";
       state.isAuth = false;
       state.isAdmin = false;
-      localStorage.removeItem("token");
-      localStorage.removeItem("expiresIn");
+      localStorage.removeItem("uinfo");
     },
   },
 });
@@ -52,6 +68,7 @@ const user = createSlice({
 export const signIn = (body) => {
   return async (dispatch) => {
     try {
+      console.log(body);
       dispatch(setStatus(true));
       await fetch(
         `http://localhost:3000${process.env.REACT_APP_SIGN_IN_ROUTE}`,
@@ -63,12 +80,6 @@ export const signIn = (body) => {
       ).then((resp) =>
         resp.json().then((data) => {
           if (data.token) {
-            localStorage.setItem("uid", data.userId);
-            localStorage.setItem("token", data.token.accessToken);
-            localStorage.setItem(
-              "expiresIn",
-              new Date().getTime() + data.token.expiresIn
-            );
             dispatch(setAuth(data));
           }
           dispatch(setError(data.error));
@@ -81,24 +92,28 @@ export const signIn = (body) => {
   };
 };
 
-export const makeChoice = (body, token) => {
-  return () => {
+export const makeChoice = (body) => {
+  return async () => {
     console.log(body);
-    // try {
-    //   fetch("API", {
-    //     method: "POST",
-    //     headers: {"Content-Type": "application/json", "X-access-token": `${token}`},
-    //     body: JSON.stringify(body),
-    //   })
-    // } catch (error) {
-    //   console.error(error.message);
-    // }
+    try {
+      await fetch(`http://localhost:3000${process.env.REACT_APP_MAKE_CHOICE}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer: ${
+            JSON.parse(localStorage.getItem("uinfo")).token
+          }`,
+        },
+        body: JSON.stringify(body),
+      }).then((resp) => resp.json().then((data) => console.log(data)));
+    } catch (error) {
+      console.error(error.message);
+    }
   };
 };
 
 export const checkVoiting = (id, uid) => {
   return async () => {
-    console.log(JSON.stringify({ userId: `${uid}` }));
     try {
       await fetch(
         `http://localhost:3000${process.env.REACT_APP_CHECK_VOICE}${id}`,
@@ -106,13 +121,15 @@ export const checkVoiting = (id, uid) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer: ${localStorage.getItem("token")}`,
+            Authorization: `Bearer: ${
+              JSON.parse(localStorage.getItem("uinfo")).token
+            }`,
           },
-          body: JSON.stringify({ userId: `${uid}` }),
+          body: JSON.stringify({ userId: uid }),
         }
       ).then((resp) => resp.json().then((data) => console.log(data)));
     } catch (error) {
-      console.error(`${error}`);
+      console.log(`${error}`);
     }
   };
 };
