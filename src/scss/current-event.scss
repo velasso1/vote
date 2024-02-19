@@ -33,7 +33,7 @@
   }
 
   &__button {
-    margin-right: 50px;
+    // margin-right: 50px;
     width: 260px;
     padding: 20px 35px;
     font-size: 15px;
@@ -48,6 +48,10 @@
 
   &__button:hover {
     background-color: #4472bc;
+  }
+
+  &__button:nth-child(n+2) {
+    margin-left: 50px;
   }
 }
 

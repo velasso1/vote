@@ -4,22 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import AcceptedVote from "../modals/accepted-vote";
 import { makeChoice, checkVoiting } from "../../store/slices/user";
 import { getCurrentEvent } from "../../store/slices/events";
+import Loader from "../ui/loader";
+import { current } from "@reduxjs/toolkit";
 
 const CurrentEvent = () => {
   const dispatch = useDispatch();
 
   const { isAdmin, userId } = useSelector((state) => state.user);
-  const { currentEvent } = useSelector((state) => state.events);
+  const { currentEvent, sendingStatus } = useSelector((state) => state.events);
 
   const [openModal, setOpenModal] = useState(false);
   const [voted, setVoted] = useState({
     voted: false,
-    accept: false,
-    denied: false,
-    canVote:
-      currentEvent.votingUsers.length > 0
-        ? currentEvent.votingUsers.includes(userId)
-        : true,
+    canVote: false,
   });
   const { id } = useParams();
 
@@ -30,6 +27,19 @@ const CurrentEvent = () => {
   useEffect(() => {
     dispatch(getCurrentEvent(id));
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (currentEvent.votingUsers) {
+      console.log(currentEvent);
+      setVoted({
+        ...voted,
+        canVote:
+          currentEvent.votingUsers.length > 0
+            ? currentEvent.votingUsers.includes(userId)
+            : true,
+      });
+    }
+  }, [currentEvent.votingUsers]);
 
   const voteFor = (target) => {
     if (target.tagName !== "BUTTON") return;
@@ -63,30 +73,27 @@ const CurrentEvent = () => {
   return (
     <>
       {openModal && <AcceptedVote />}
+
       <div className="current-event">
         <div className="current-event__name">{currentEvent.name}</div>
+
         <div className="current-event__description">
           {currentEvent.description}
         </div>
-        <div className="current-event__date">{currentEvent.dateOfCreate}</div>
-        {!currentEvent.isFinished ? (
+        {/* <div className="current-event__date">{currentEvent.dateOfCreate}</div> */}
+
+        {!currentEvent.isFinished && voted.canVote ? (
           <div
             className="current-event__buttons"
             onClick={(e) => voteFor(e.target)}
           >
-            {voted.voted === true && voted.canVote ? (
-              <h2 className="current-event__closed">Вы проголосовали</h2>
-            ) : (
-              <>
-                <button className="current-event__button support" name="sup">
-                  Проголосовать ЗА
-                </button>
+            <button className="current-event__button support" name="sup">
+              Проголосовать ЗА
+            </button>
 
-                <button className="current-event__button denied" name="den">
-                  Проголосовать ПРОТИВ
-                </button>
-              </>
-            )}
+            <button className="current-event__button denied" name="den">
+              Проголосовать ПРОТИВ
+            </button>
           </div>
         ) : (
           <h2 className="current-event__closed">
@@ -94,6 +101,7 @@ const CurrentEvent = () => {
           </h2>
         )}
       </div>
+
       {isAdmin && (
         <div className="stats">
           <h3 className="stats__title">Статистика голосования:</h3>
@@ -117,6 +125,7 @@ const CurrentEvent = () => {
               </tr>
             </tbody>
           </table>
+          {sendingStatus && <Loader />}
         </div>
       )}
     </>

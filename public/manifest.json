@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Secret ballot",
+  "name": "Secret ballot system",
   "icons": [
     {
       "src": "./images/favicon.ico",

@@ -83,7 +83,7 @@ export const createEvent = (body) => {
 };
 
 export const deleteEvent = (id) => {
-  return async (dispatch, updateEvents) => {
+  return async () => {
     try {
       await fetch(
         `http://localhost:3000${process.env.REACT_APP_DELETE_EVENT}${id}`,
@@ -117,9 +117,11 @@ export const getCurrentEvent = (id) => {
           },
         }
       ).then((resp) =>
-        resp.json().then((data) => dispatch(currentEventReceived(data)))
+        resp.json().then((data) => {
+          dispatch(currentEventReceived(data));
+          dispatch(changeSendingStatus(false));
+        })
       );
-      dispatch(changeSendingStatus(false));
     } catch (error) {
       console.error(`${error}`);
     }

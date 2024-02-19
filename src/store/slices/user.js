@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import bcrypt from "bcryptjs-react";
 
 const initialState = {
   login: null,
@@ -31,10 +30,7 @@ const user = createSlice({
     },
 
     setAuth(state, action) {
-      console.log(action.payload);
       const { userId, token, role } = action.payload;
-      console.log(role);
-      console.log(token.accessToken);
       state.userId = userId;
       state.isAuth = !!token.accessToken;
       state.isAdmin = role === "admin";
@@ -129,7 +125,7 @@ export const checkVoiting = (id, uid) => {
         }
       ).then((resp) => resp.json().then((data) => console.log(data)));
     } catch (error) {
-      console.log(`${error}`);
+      console.error(`${error}`);
     }
   };
 };
