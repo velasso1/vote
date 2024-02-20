@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createEvent } from "../../store/slices/events";
+import { createEvent, updateEvent } from "../../store/slices/events";
 import { useNavigate } from "react-router-dom";
 import { getAllAccs } from "../../store/slices/accounts";
 import Loader from "./loader";
 // import Success from "../modals/success";
 
-const CreateEvent = () => {
+const CreateEvent = ({ eventData, path, id }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -17,23 +17,25 @@ const CreateEvent = () => {
   const { accounts } = useSelector((state) => state.accounts);
   const { sendingStatus } = useSelector((state) => state.events);
 
-  const [votedPeoples, setVotedPeoples] = useState([]);
   const [state, setState] = useState({
     error: false,
     empty: false,
   });
 
   const [eventInfo, setEventInfo] = useState({
-    name: "",
-    description: "",
+    // check eventData for update event information. For create event value === ''
+    name: eventData ? eventData.name : "",
+    description: eventData ? eventData.description : "",
     dateCreated: new Date().getTime(),
-    dateEvent: "",
-    numberOfVotes: "",
+    dateEvent: eventData ? eventData.dateEvent : "",
+    numberOfVotes: eventData ? eventData.numberOfVotes : "",
     isFinished: false,
     accepted: 0,
     denied: 0,
-    votingUsers: [],
+    votingUsers: eventData ? eventData.votingUsers : [],
   });
+
+  const [votedPeoples, setVotedPeoples] = useState([]);
 
   const newAccounts = accounts.filter(
     (item) => !eventInfo.votingUsers.includes(item._id)
@@ -49,7 +51,15 @@ const CreateEvent = () => {
       }
     }
 
-    if (+eventInfo.numberOfVotes !== +votedPeoples.length) {
+    if (+eventInfo.numberOfVotes <= 0) {
+      setState({ error: true, empty: false });
+      return;
+    }
+
+    if (
+      +votedPeoples.length > 0 &&
+      +eventInfo.numberOfVotes !== +votedPeoples.length
+    ) {
       setState({ error: true, empty: false });
       return;
     }
@@ -76,14 +86,16 @@ const CreateEvent = () => {
   };
 
   const sendData = () => {
-    dispatch(createEvent(eventInfo));
+    path === "update"
+      ? dispatch(updateEvent(eventInfo, id))
+      : dispatch(createEvent(eventInfo));
     setEventInfo({
       ...eventInfo,
       name: "",
       description: "",
       dateCreated: new Date().getTime(),
       dateEvent: "",
-      numberOfVotes: "",
+      numberOfVotes: "Количество голосов должно быть больше 0",
       isFinished: false,
       accepted: 0,
       denied: 0,
@@ -97,7 +109,9 @@ const CreateEvent = () => {
   return (
     <div className="create-event">
       {sendingStatus && <Loader />}
-      <h1 className="create-event__title">Создание нового события</h1>
+      <h1 className="create-event__title">
+        {path === "update" ? "Редактирование" : "Создание нового"} события
+      </h1>
       {state.empty && (
         <span className="create-event__clue">
           *Все поля должны быть заполнены
@@ -134,12 +148,14 @@ const CreateEvent = () => {
           placeholder="Введите описание"
         />
 
-        <label htmlFor="quantity">Введите количество голосующих</label>
+        <label htmlFor="quantity">Введите нужное количество голосов</label>
         <input
           disabled={sendingStatus}
           style={{
             borderColor:
-              state.empty && eventInfo.numberOfVotes === "" ? "red" : "black",
+              (state.empty && eventInfo.numberOfVotes === "") || 0
+                ? "red"
+                : "black",
           }}
           onChange={(e) =>
             setEventInfo({ ...eventInfo, numberOfVotes: +e.target.value })
@@ -147,13 +163,14 @@ const CreateEvent = () => {
           value={eventInfo.numberOfVotes}
           className="create-event__quantity"
           type="number"
-          min={0}
+          min={1}
           name="quantity"
-          placeholder="Введите количество"
+          placeholder="Количество голосов должно быть больше 0"
         />
         {state.error && (
           <span className="create-event__clue">
-            *Введенное количество не совпадает с количеством выбранных людей
+            *Введенное количество должно совпадать с количеством выбранных людей{" "}
+            <br /> или быть больше 0
           </span>
         )}
 
@@ -219,7 +236,7 @@ const CreateEvent = () => {
           className="create-event__button"
           onClick={() => validate()}
         >
-          Создать событие
+          {path === "update" ? "Сохранить" : "Создать"} событие
         </button>
       </div>
     </div>

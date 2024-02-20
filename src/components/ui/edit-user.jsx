@@ -14,11 +14,10 @@ const EditUser = () => {
   );
   const navigate = useNavigate();
   const params = useParams();
-
+  const [openModal, setOpenModal] = useState(false);
   const [state, setState] = useState({
     error: false,
     empty: false,
-    sending: false,
   });
 
   const [userInfo, setUserInfo] = useState({
@@ -27,12 +26,16 @@ const EditUser = () => {
   });
 
   const updateInfo = () => {
+    if (userInfo.password.length < 8 || userInfo.login.length < 2) {
+      setState({ ...state, error: true });
+      return;
+    }
     dispatch(updateUserData(userInfo, params.id));
-    setState({ ...state, sending: true });
+    setOpenModal(true);
 
     setTimeout(() => {
-      // setState({ ...state, sending: false });
       navigate("/manage");
+      setOpenModal(false);
     }, 2200);
   };
 
@@ -49,7 +52,7 @@ const EditUser = () => {
               className={item.className}
               userInfo={userInfo}
               setUserInfo={setUserInfo}
-              disable={state.sending}
+              disable={openModal}
               state={state}
             />
           );
@@ -57,8 +60,13 @@ const EditUser = () => {
       </div>
 
       <div className="edit-user__buttons">
+        {state.error && (
+          <span className="create-event__clue">
+            *Длина пароля должна быть не менее 8 символов
+          </span>
+        )}
         <button
-          disabled={state.sending}
+          disabled={sendingStatus}
           className="edit-user__button"
           onClick={() => updateInfo()}
         >
@@ -66,7 +74,7 @@ const EditUser = () => {
         </button>
       </div>
 
-      {state.sending && <Success />}
+      {openModal && <Success />}
     </div>
   );
 };

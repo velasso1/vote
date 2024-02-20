@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { changeSendingStatus } from "./events";
 
 const initialState = {
   login: null,
@@ -7,6 +8,7 @@ const initialState = {
   isAdmin: false,
   error: "",
   statusLoading: false,
+  isVoted: false,
 };
 
 const user = createSlice({
@@ -27,6 +29,16 @@ const user = createSlice({
 
     setError(state, action) {
       state.error = action.payload;
+    },
+
+    setVoted(state, action) {
+      if (Array.isArray(action.payload)) {
+        const { accepted, denied } = action.payload[0] || "null";
+        state.isVoted = accepted || denied;
+        return;
+      }
+      const { accepted, denied } = action.payload.voice;
+      state.isVoted = accepted || denied;
     },
 
     setAuth(state, action) {
@@ -89,9 +101,9 @@ export const signIn = (body) => {
 };
 
 export const makeChoice = (body) => {
-  return async () => {
-    console.log(body);
+  return async (dispatch) => {
     try {
+      dispatch(changeSendingStatus(true));
       await fetch(`http://localhost:3000${process.env.REACT_APP_MAKE_CHOICE}`, {
         method: "POST",
         headers: {
@@ -101,7 +113,12 @@ export const makeChoice = (body) => {
           }`,
         },
         body: JSON.stringify(body),
-      }).then((resp) => resp.json().then((data) => console.log(data)));
+      }).then((resp) =>
+        resp.json().then((data) => {
+          dispatch(setVoted(data));
+          dispatch(changeSendingStatus(false));
+        })
+      );
     } catch (error) {
       console.error(error.message);
     }
@@ -109,8 +126,9 @@ export const makeChoice = (body) => {
 };
 
 export const checkVoiting = (id, uid) => {
-  return async () => {
+  return async (dispatch) => {
     try {
+      dispatch(changeSendingStatus(true));
       await fetch(
         `http://localhost:3000${process.env.REACT_APP_CHECK_VOICE}${id}`,
         {
@@ -123,7 +141,12 @@ export const checkVoiting = (id, uid) => {
           },
           body: JSON.stringify({ userId: uid }),
         }
-      ).then((resp) => resp.json().then((data) => console.log(data)));
+      ).then((resp) =>
+        resp.json().then((data) => {
+          dispatch(setVoted(data));
+          dispatch(changeSendingStatus(false));
+        })
+      );
     } catch (error) {
       console.error(`${error}`);
     }
@@ -138,6 +161,7 @@ export const {
   setAuth,
   signOut,
   setStatus,
+  setVoted,
 } = user.actions;
 
 export default user.reducer;

@@ -77,7 +77,7 @@ export const updateUserData = (body, id) => {
         }
       ).then((resp) =>
         resp.json().then((data) => {
-          dispatch(changeSendingStatus(true));
+          dispatch(changeSendingStatus(false));
         })
       );
     } catch (error) {

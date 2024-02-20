@@ -77,7 +77,7 @@ const EventsList = () => {
           </div>
         )}
         <div className="events__list">
-          {newData.length !== 0 ? (
+          {newData ? (
             newData.map((item, index) => {
               return (
                 <EventsItem

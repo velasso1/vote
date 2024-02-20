@@ -33,6 +33,18 @@ const events = createSlice({
     currentEventReceived(state, action) {
       state.currentEvent = action.payload;
     },
+
+    updateEvents(state, action) {
+      state.events = [
+        ...state.events,
+        ...state.events.map((item) => {
+          if (item._id === action.payload._id) {
+            return action.payload;
+          }
+          return item;
+        }),
+      ];
+    },
   },
 });
 
@@ -102,6 +114,34 @@ export const deleteEvent = (id) => {
   };
 };
 
+export const updateEvent = (body, id) => {
+  return async (dispatch) => {
+    try {
+      dispatch(changeSendingStatus(true));
+      await fetch(
+        `http://localhost:3000${process.env.REACT_APP_UPDATE_EVENT}${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer: ${
+              JSON.parse(localStorage.getItem("uinfo")).token
+            }`,
+          },
+          body: JSON.stringify(body),
+        }
+      ).then((resp) =>
+        resp.json().then((data) => {
+          dispatch(updateEvents(data));
+          dispatch(changeSendingStatus(false));
+        })
+      );
+    } catch (error) {
+      console.error(`${error}`);
+    }
+  };
+};
+
 export const getCurrentEvent = (id) => {
   return async (dispatch) => {
     try {
@@ -134,6 +174,7 @@ export const {
   eventsFilter,
   changeSendingStatus,
   currentEventReceived,
+  updateEvents,
 } = events.actions;
 
 export default events.reducer;

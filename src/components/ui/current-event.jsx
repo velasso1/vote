@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AcceptedVote from "../modals/accepted-vote";
 import { makeChoice, checkVoiting } from "../../store/slices/user";
 import { getCurrentEvent } from "../../store/slices/events";
 import Loader from "../ui/loader";
-import { current } from "@reduxjs/toolkit";
 
 const CurrentEvent = () => {
   const dispatch = useDispatch();
-
-  const { isAdmin, userId } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const { isAdmin, userId, isVoted } = useSelector((state) => state.user);
   const { currentEvent, sendingStatus } = useSelector((state) => state.events);
+  // const { accounts } = useSelector((state) => state.accounts);
 
   const [openModal, setOpenModal] = useState(false);
   const [voted, setVoted] = useState({
@@ -30,7 +30,6 @@ const CurrentEvent = () => {
 
   useEffect(() => {
     if (currentEvent.votingUsers) {
-      console.log(currentEvent);
       setVoted({
         ...voted,
         canVote:
@@ -73,35 +72,44 @@ const CurrentEvent = () => {
   return (
     <>
       {openModal && <AcceptedVote />}
-
       <div className="current-event">
         <div className="current-event__name">{currentEvent.name}</div>
-
         <div className="current-event__description">
           {currentEvent.description}
         </div>
         {/* <div className="current-event__date">{currentEvent.dateOfCreate}</div> */}
-
+        {/* if event is not finished and user includes in votingUsers array in this event */}
         {!currentEvent.isFinished && voted.canVote ? (
           <div
             className="current-event__buttons"
             onClick={(e) => voteFor(e.target)}
           >
-            <button className="current-event__button support" name="sup">
-              Проголосовать ЗА
-            </button>
-
-            <button className="current-event__button denied" name="den">
-              Проголосовать ПРОТИВ
-            </button>
+            {/* if user is not voted, render buttons, else render notif */}
+            {!isVoted ? (
+              <>
+                <button className="current-event__button support" name="sup">
+                  Проголосовать ЗА
+                </button>
+                <button className="current-event__button denied" name="den">
+                  Проголосовать ПРОТИВ
+                </button>
+              </>
+            ) : (
+              <h2 className="current-event__closed">Вы проголосовали</h2>
+            )}
           </div>
         ) : (
-          <h2 className="current-event__closed">
-            Вы не можете принять участие в голосовании
-          </h2>
+          <div className="current-event__notif">
+            {sendingStatus ? (
+              <Loader />
+            ) : (
+              <h2 className="current-event__closed">
+                Вы не можете принять участие в голосовании
+              </h2>
+            )}
+          </div>
         )}
       </div>
-
       {isAdmin && (
         <div className="stats">
           <h3 className="stats__title">Статистика голосования:</h3>
@@ -125,7 +133,28 @@ const CurrentEvent = () => {
               </tr>
             </tbody>
           </table>
-          {sendingStatus && <Loader />}
+          <h3 className="stats__status">
+            Голосование: {currentEvent.isFinished ? "закрыто" : "открыто"}
+          </h3>
+          {/* <div className="stats__users">
+            <ul className="stats__users-list">
+              {accounts.map((item, index) => {
+                return (
+                  <li key={index} className="state__item">
+                    {item.login}
+                  </li>
+                );
+              })}
+            </ul>
+          </div> */}
+          <div className="stats__edit-event">
+            <button
+              className="create-event__button"
+              onClick={(e) => navigate(`/edit-event/${currentEvent._id}`)}
+            >
+              Редактировать
+            </button>
+          </div>
         </div>
       )}
     </>

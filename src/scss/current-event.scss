@@ -42,6 +42,12 @@
     font-weight: 500;
   }
 
+  &__notif {
+    .loader {
+      left: 47%;
+    }
+  }
+
   &__button:active {
     font-size: 13px;
   }
@@ -50,7 +56,7 @@
     background-color: #4472bc;
   }
 
-  &__button:nth-child(n+2) {
+  &__button:nth-child(n + 2) {
     margin-left: 50px;
   }
 }
@@ -61,4 +67,10 @@
 
 .denied {
   background-color: #f26065;
+}
+
+.stats {
+  &__status {
+    margin: 10px 0;
+  }
 }
