@@ -77,7 +77,7 @@ const EventsList = () => {
           </div>
         )}
         <div className="events__list">
-          {newData ? (
+          {newData && newData.length ? (
             newData.map((item, index) => {
               return (
                 <EventsItem

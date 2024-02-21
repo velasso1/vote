@@ -35,7 +35,9 @@ const CreateEvent = ({ eventData, path, id }) => {
     votingUsers: eventData ? eventData.votingUsers : [],
   });
 
-  const [votedPeoples, setVotedPeoples] = useState([]);
+  const [votedPeoples, setVotedPeoples] = useState(
+    accounts.filter((item) => eventInfo.votingUsers.includes(item._id))
+  );
 
   const newAccounts = accounts.filter(
     (item) => !eventInfo.votingUsers.includes(item._id)
