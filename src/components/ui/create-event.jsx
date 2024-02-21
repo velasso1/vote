@@ -4,7 +4,6 @@ import { createEvent, updateEvent } from "../../store/slices/events";
 import { useNavigate } from "react-router-dom";
 import { getAllAccs } from "../../store/slices/accounts";
 import Loader from "./loader";
-// import Success from "../modals/success";
 
 const CreateEvent = ({ eventData, path, id }) => {
   const dispatch = useDispatch();
@@ -97,7 +96,7 @@ const CreateEvent = ({ eventData, path, id }) => {
       description: "",
       dateCreated: new Date().getTime(),
       dateEvent: "",
-      numberOfVotes: "Количество голосов должно быть больше 0",
+      numberOfVotes: "",
       isFinished: false,
       accepted: 0,
       denied: 0,
@@ -105,12 +104,15 @@ const CreateEvent = ({ eventData, path, id }) => {
     });
     setVotedPeoples([]);
     setState({ error: false, empty: false });
-    navigate("/events");
+    setTimeout(() => {
+      navigate("/events");
+    }, 150);
   };
 
   return (
     <div className="create-event">
       {sendingStatus && <Loader />}
+
       <h1 className="create-event__title">
         {path === "update" ? "Редактирование" : "Создание нового"} события
       </h1>

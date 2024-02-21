@@ -11,7 +11,6 @@ const CurrentEvent = () => {
   const navigate = useNavigate();
   const { isAdmin, userId, isVoted } = useSelector((state) => state.user);
   const { currentEvent, sendingStatus } = useSelector((state) => state.events);
-  // const { accounts } = useSelector((state) => state.accounts);
 
   const [openModal, setOpenModal] = useState(false);
   const [voted, setVoted] = useState({

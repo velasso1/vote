@@ -1,13 +1,18 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signOut } from "../../store/slices/user";
+import { checkExpiresToken, signOut } from "../../store/slices/user";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const { isAuth } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    dispatch(checkExpiresToken());
+  }, [location]);
 
   const signOutFromAcc = () => {
     dispatch(signOut());

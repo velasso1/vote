@@ -9,6 +9,7 @@ const initialState = {
   error: "",
   statusLoading: false,
   isVoted: false,
+  tokenIsValid: false,
 };
 
 const user = createSlice({
@@ -19,12 +20,20 @@ const user = createSlice({
       state.login = action.payload.login;
     },
 
-    checkExpiresToken(state) {
-      const { role, uid, token, expiration } =
-        JSON.parse(localStorage.getItem("uinfo")) || "null";
-      state.isAuth = expiration > new Date().getTime();
+    checkAuth(state) {
+      const { role, uid } = JSON.parse(localStorage.getItem("uinfo")) || "null";
+      state.isAuth = state.tokenIsValid;
       state.isAdmin = role === "admin";
       state.userId = uid;
+    },
+
+    checkExpiresToken(state) {
+      const { expiration } =
+        JSON.parse(localStorage.getItem("uinfo")) || "null";
+      state.tokenIsValid = expiration > new Date().getTime();
+      if (!state.tokenIsValid) {
+        renewalToken();
+      }
     },
 
     setError(state, action) {
@@ -52,6 +61,7 @@ const user = createSlice({
         JSON.stringify({
           uid: userId,
           token: token.accessToken,
+          refTok: token.refreshToken,
           expiration: new Date().getTime() + token.expiresIn,
           role: role,
         })
@@ -66,6 +76,7 @@ const user = createSlice({
       state.login = "";
       state.isAuth = false;
       state.isAdmin = false;
+      state.tokenIsValid = false;
       localStorage.removeItem("uinfo");
     },
   },
@@ -76,19 +87,16 @@ const user = createSlice({
 export const signIn = (body) => {
   return async (dispatch) => {
     try {
-      console.log(body);
       dispatch(setStatus(true));
-      await fetch(
-        `http://localhost:3000${process.env.REACT_APP_SIGN_IN_ROUTE}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      ).then((resp) =>
+      await fetch(`${process.env.REACT_APP_SIGN_IN_ROUTE}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      }).then((resp) =>
         resp.json().then((data) => {
           if (data.token) {
             dispatch(setAuth(data));
+            dispatch(checkExpiresToken());
           }
           dispatch(setError(data.error));
           dispatch(setStatus(false));
@@ -101,10 +109,12 @@ export const signIn = (body) => {
 };
 
 export const makeChoice = (body) => {
-  return async (dispatch) => {
+  return async (dispatch, state) => {
     try {
+      dispatch(checkExpiresToken());
       dispatch(changeSendingStatus(true));
-      await fetch(`http://localhost:3000${process.env.REACT_APP_MAKE_CHOICE}`, {
+
+      await fetch(`${process.env.REACT_APP_MAKE_CHOICE}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,20 +138,18 @@ export const makeChoice = (body) => {
 export const checkVoiting = (id, uid) => {
   return async (dispatch) => {
     try {
+      dispatch(checkExpiresToken());
       dispatch(changeSendingStatus(true));
-      await fetch(
-        `http://localhost:3000${process.env.REACT_APP_CHECK_VOICE}${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer: ${
-              JSON.parse(localStorage.getItem("uinfo")).token
-            }`,
-          },
-          body: JSON.stringify({ userId: uid }),
-        }
-      ).then((resp) =>
+      await fetch(`${process.env.REACT_APP_CHECK_VOICE}${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer: ${
+            JSON.parse(localStorage.getItem("uinfo")).token
+          }`,
+        },
+        body: JSON.stringify({ userId: uid }),
+      }).then((resp) =>
         resp.json().then((data) => {
           dispatch(setVoted(data));
           dispatch(changeSendingStatus(false));
@@ -153,9 +161,29 @@ export const checkVoiting = (id, uid) => {
   };
 };
 
+export const renewalToken = () => {
+  return async (dispatch) => {
+    await fetch(`${process.env.REACT_APP_RENEWAL_TOKEN}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      payload: JSON.stringify({
+        refreshToken: `${JSON.parse(localStorage.getItem("uinfo")).refTok}`,
+      }),
+    }).then((resp) =>
+      resp.json().then((data) => {
+        dispatch(setAuth(data));
+        dispatch(checkExpiresToken());
+      })
+    );
+  };
+};
+
 export const {
   setUser,
   removeUser,
+  checkAuth,
   checkExpiresToken,
   setError,
   setAuth,

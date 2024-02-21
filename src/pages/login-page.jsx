@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../store/slices/user";
 import { setUser } from "../store/slices/user";
 import { useNavigate } from "react-router-dom";
-import { checkExpiresToken } from "../store/slices/user";
+import { checkAuth } from "../store/slices/user";
 import Loader from "../components/ui/loader";
 
 const LoginPage = () => {
@@ -21,9 +21,8 @@ const LoginPage = () => {
   const { error, isAuth, statusLoading } = useSelector((state) => state.user);
 
   useEffect(() => {
-    dispatch(checkExpiresToken());
-
-    if (isAuth) navigate("/events");
+    dispatch(checkAuth());
+    if (isAuth) navigate(`/events`);
   }, [isAuth, dispatch, navigate]);
 
   const enter = (e) => {

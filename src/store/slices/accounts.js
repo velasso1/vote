@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { checkExpiresToken } from "./user";
 
 const initialState = {
   accounts: [],
@@ -17,6 +18,7 @@ const accounts = createSlice({
     },
     changeSendingStatus(state, action) {
       state.sendingStatus = action.payload;
+      state.hasError = !action.payload;
     },
 
     accountsFilter(state) {
@@ -41,7 +43,8 @@ const accounts = createSlice({
 export const getAllAccs = () => {
   return (dispatch) => {
     try {
-      fetch(`http://localhost:3000${process.env.REACT_APP_ALL_ACCOUNTS}`, {
+      dispatch(checkExpiresToken());
+      fetch(`${process.env.REACT_APP_ALL_ACCOUNTS}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${
@@ -63,19 +66,17 @@ export const updateUserData = (body, id) => {
   return async (dispatch) => {
     try {
       dispatch(changeSendingStatus(true));
-      await fetch(
-        `http://localhost:3000${process.env.REACT_APP_UPDATE_ACC_DATA}${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer: ${
-              JSON.parse(localStorage.getItem("uinfo")).token
-            }`,
-          },
-          body: JSON.stringify(body),
-        }
-      ).then((resp) =>
+      dispatch(checkExpiresToken());
+      await fetch(`${process.env.REACT_APP_UPDATE_ACC_DATA}${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer: ${
+            JSON.parse(localStorage.getItem("uinfo")).token
+          }`,
+        },
+        body: JSON.stringify(body),
+      }).then((resp) =>
         resp.json().then((data) => {
           dispatch(changeSendingStatus(false));
         })
@@ -90,17 +91,15 @@ export const deleteUser = (id) => {
   return async (dispatch) => {
     try {
       dispatch(changeSendingStatus(true));
-      await fetch(
-        `http://localhost:3000${process.env.REACT_APP_DELETE_ACCOUNT}${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer: ${
-              JSON.parse(localStorage.getItem("uinfo")).token
-            }`,
-          },
-        }
-      ).then((resp) =>
+      dispatch(checkExpiresToken());
+      await fetch(`${process.env.REACT_APP_DELETE_ACCOUNT}${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer: ${
+            JSON.parse(localStorage.getItem("uinfo")).token
+          }`,
+        },
+      }).then((resp) =>
         resp.json().then((data) => {
           dispatch(changeSendingStatus(false));
         })
@@ -115,19 +114,17 @@ export const createNewUser = (body) => {
   return async (dispatch) => {
     try {
       dispatch(changeSendingStatus(true));
-      await fetch(
-        `http://localhost:3000${process.env.REACT_APP_CREATE_ACCOUNT}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer: ${
-              JSON.parse(localStorage.getItem("uinfo")).token
-            }`,
-          },
-          body: JSON.stringify(body),
-        }
-      )
+      dispatch(checkExpiresToken());
+      await fetch(`${process.env.REACT_APP_CREATE_ACCOUNT}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer: ${
+            JSON.parse(localStorage.getItem("uinfo")).token
+          }`,
+        },
+        body: JSON.stringify(body),
+      })
         .then((resp) => resp.json())
         .then((data) => {
           dispatch(accsReceived(data));

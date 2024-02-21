@@ -36,7 +36,7 @@ const EditUser = () => {
     setTimeout(() => {
       navigate("/manage");
       setOpenModal(false);
-    }, 2200);
+    }, 1000);
   };
 
   return (

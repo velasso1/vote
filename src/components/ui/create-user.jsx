@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createNewUser } from "../../store/slices/accounts";
 import hideIcon from "../../images/hide-pass.svg";
-import Success from "../modals/success";
 import { useNavigate } from "react-router-dom";
 import Loader from "./loader";
 import TextField from "../fields/text-field";
@@ -12,25 +11,22 @@ import config from "../../auxuliary.json";
 const CreateUser = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { sendingStatus } = useSelector((state) => state.accounts);
   const [userData, setUserData] = useState({
     login: "",
-    // name: "",
-    // surname: "",
     password: "",
   });
 
   const [state, setState] = useState({
     error: false,
     empty: false,
-    sending: false,
   });
 
   const [hidePassword, setHidePassword] = useState(true);
 
   const createUser = () => {
     if (userData.login.length === 0 || userData.password.length === 0) {
-      setState({ ...state, error: false, empty: true });
+      setState({ error: false, empty: true });
       return;
     }
 
@@ -40,12 +36,11 @@ const CreateUser = () => {
     }
 
     dispatch(createNewUser(userData));
-    setState({ ...state, sending: true });
+    setUserData({ login: "", password: "" });
+    setState({ error: false, empty: false });
     setTimeout(() => {
-      setUserData({ login: "", password: "" });
-      setState({ error: false, empty: false, sending: false });
       navigate("/manage");
-    }, 2200);
+    }, 150);
   };
 
   return (
@@ -56,7 +51,7 @@ const CreateUser = () => {
           return (
             <TextField
               key={index}
-              disabled={state.sending}
+              disabled={sendingStatus}
               state={state}
               userData={userData}
               hide={hidePassword}
@@ -82,7 +77,7 @@ const CreateUser = () => {
       </div>
       <div className="create-user__buttons">
         <button
-          disabled={state.sending}
+          disabled={sendingStatus}
           className="create-user__button"
           onClick={(e) => {
             createUser();
@@ -91,7 +86,7 @@ const CreateUser = () => {
           Создать учетную запись
         </button>
         <button
-          disabled={state.sending}
+          disabled={sendingStatus}
           className="create-user__button"
           onClick={() => {
             setUserData({ login: "", password: "", name: "", surname: "" });
@@ -110,11 +105,7 @@ const CreateUser = () => {
           <span style={{ color: "red" }}>Все поля должны быть заполнены</span>
         )}
       </div>
-      {state.sending && (
-        <>
-          <Success /> <Loader />
-        </>
-      )}
+      {sendingStatus && <Loader />}
     </div>
   );
 };
