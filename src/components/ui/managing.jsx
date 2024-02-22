@@ -18,7 +18,8 @@ const Managing = () => {
     dispatch(getAllAccs());
   }, [dispatch]);
 
-  const editUserData = (user) => {
+  const editUserData = (e, user) => {
+    if (e.target.className === "managing__delete") return;
     navigate(`/edit-user/${user._id}`);
     dispatch(userToEdit(user));
   };
@@ -49,14 +50,13 @@ const Managing = () => {
               {accounts.length ? (
                 accounts.map((item, index) => {
                   return item.login !== "admin" && accounts.length ? (
-                    <tr className="managing__item" key={index}>
+                    <tr
+                      className="managing__item"
+                      key={index}
+                      onClick={(e) => editUserData(e, item)}
+                    >
                       <td>{item.login}</td>
-                      <td
-                        className="managing__edit"
-                        onClick={() => editUserData(item)}
-                      >
-                        Редактировать
-                      </td>
+                      <td className="managing__edit">Редактировать</td>
                       <td
                         className="managing__delete"
                         onClick={() => deleteAccount(item._id)}

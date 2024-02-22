@@ -195,6 +195,23 @@ const CreateEvent = ({ eventData, path, id }) => {
         />
       </div>
       <div className="create-event__peoples">
+        <div className="create-event__right">
+          <span className="create-event__subtitle">Все люди</span>
+          <ul className="create-event__all">
+            {newAccounts.map((item, index) => {
+              return item.login !== "admin" ? (
+                <li
+                  className="create-event__item"
+                  key={index}
+                  onClick={() => choosePeople(item)}
+                >
+                  {item.login}
+                </li>
+              ) : null;
+            })}
+          </ul>
+        </div>
+
         <div className="create-event__left">
           <span className="create-event__subtitle">Выбранные люди</span>
           <ul className="create-event__selected">
@@ -213,23 +230,6 @@ const CreateEvent = ({ eventData, path, id }) => {
             ) : (
               <li className="create-event__item">Никто не выбран</li>
             )}
-          </ul>
-        </div>
-
-        <div className="create-event__right">
-          <span className="create-event__subtitle">Все люди</span>
-          <ul className="create-event__all">
-            {newAccounts.map((item, index) => {
-              return item.login !== "admin" ? (
-                <li
-                  className="create-event__item"
-                  key={index}
-                  onClick={() => choosePeople(item)}
-                >
-                  {item.login}
-                </li>
-              ) : null;
-            })}
           </ul>
         </div>
       </div>

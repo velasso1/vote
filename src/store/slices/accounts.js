@@ -6,7 +6,6 @@ const initialState = {
   sendingStatus: false,
   idForDelete: null,
   dataForUpdate: null,
-  hasError: false,
 };
 
 const accounts = createSlice({
@@ -18,7 +17,6 @@ const accounts = createSlice({
     },
     changeSendingStatus(state, action) {
       state.sendingStatus = action.payload;
-      state.hasError = !action.payload;
     },
 
     accountsFilter(state) {
@@ -127,7 +125,7 @@ export const createNewUser = (body) => {
       })
         .then((resp) => resp.json())
         .then((data) => {
-          dispatch(accsReceived(data));
+          dispatch(getAllAccs());
           dispatch(changeSendingStatus(false));
         });
     } catch (err) {
@@ -142,6 +140,7 @@ export const {
   userToEdit,
   accountsFilter,
   getIdForDelete,
+  addNewAccount,
 } = accounts.actions;
 
 export default accounts.reducer;

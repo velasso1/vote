@@ -20,7 +20,12 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header__logo">
-        <img className="header__logo" src="images/logo.webp" alt="logo" />
+        <img
+          className="header__logo"
+          src="images/logo.webp"
+          alt="logo"
+          onClick={() => navigate("/events")}
+        />
       </div>
       <div className="header__name">
         <h1 className="header__title">Тайное голосование</h1>

@@ -1,19 +1,11 @@
 import React from "react";
 
-const TextField = ({
-  disabled,
-  id,
-  state,
-  userData,
-  setUserData,
-  text,
-  hide,
-}) => {
+const TextField = ({ disabled, id, state, userData, setUserData, text }) => {
   return (
     <>
       <label htmlFor={id}>{text}</label>
       <input
-        type={id === "password" && hide ? "password" : "text"}
+        type="text"
         placeholder={text}
         id={id}
         disabled={disabled}

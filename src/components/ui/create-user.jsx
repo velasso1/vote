@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewUser } from "../../store/slices/accounts";
-import hideIcon from "../../images/hide-pass.svg";
+import { createNewUser, getAllAccs } from "../../store/slices/accounts";
+// import hideIcon from "../../images/hide-pass.svg";
 import { useNavigate } from "react-router-dom";
 import Loader from "./loader";
 import TextField from "../fields/text-field";
@@ -15,29 +15,35 @@ const CreateUser = () => {
   const [userData, setUserData] = useState({
     login: "",
     password: "",
+    repeatPassword: "",
   });
 
   const [state, setState] = useState({
     error: false,
     empty: false,
+    difPass: false,
   });
-
-  const [hidePassword, setHidePassword] = useState(true);
 
   const createUser = () => {
     if (userData.login.length === 0 || userData.password.length === 0) {
-      setState({ error: false, empty: true });
+      setState({ ...state, error: false, empty: true });
       return;
     }
 
     if (userData.password.length < 8) {
-      setState({ error: true, empty: false });
+      setState({ ...state, error: true, empty: false });
+      return;
+    }
+
+    if (userData.password !== userData.repeatPassword) {
+      setState({ error: false, empty: false, difPass: true });
       return;
     }
 
     dispatch(createNewUser(userData));
-    setUserData({ login: "", password: "" });
+    setUserData({ login: "", password: "", repeatPassword: "" });
     setState({ error: false, empty: false });
+    dispatch(getAllAccs());
     setTimeout(() => {
       navigate("/manage");
     }, 150);
@@ -54,21 +60,12 @@ const CreateUser = () => {
               disabled={sendingStatus}
               state={state}
               userData={userData}
-              hide={hidePassword}
               setUserData={setUserData}
               id={item.id}
               text={item.text}
             />
           );
         })}
-        <div className="password-box">
-          <img
-            className="create-user__icon"
-            src={hideIcon}
-            alt="hide pass"
-            onClick={() => setHidePassword(!hidePassword)}
-          />
-        </div>
         {state.error && (
           <span className="create-user__clue">
             *Длина пароля должна быть не менее 8 символов
@@ -103,6 +100,10 @@ const CreateUser = () => {
 
         {state.empty && (
           <span style={{ color: "red" }}>Все поля должны быть заполнены</span>
+        )}
+
+        {state.difPass && (
+          <span style={{ color: "red" }}>Пароли не совпадают</span>
         )}
       </div>
       {sendingStatus && <Loader />}

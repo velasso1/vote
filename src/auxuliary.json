@@ -119,7 +119,8 @@
   ],
   "textFieldsUser": [
     { "id": "login", "text": "Введите логин" },
-    { "id": "password", "text": "Введите пароль" }
+    { "id": "password", "text": "Введите пароль" },
+    { "id": "repeatPassword", "text": "Повторите пароль" }
   ],
 
   "editUserFields": [
