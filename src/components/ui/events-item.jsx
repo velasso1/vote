@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteEvent } from "../../store/slices/events";
-import { setIdForDelete } from "../../store/slices/events";
+import { deleteEvent, setIdForDelete } from "../../store/slices/events";
 import TrashBin from "./trash-bin";
 import ConfirmAction from "../modals/confirm-action";
 

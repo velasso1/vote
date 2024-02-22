@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeTarget } from "../../store/slices/check-box";
+import { getEvents } from "../../store/slices/events";
 import { useNavigate } from "react-router-dom";
 import EventsItem from "./events-item";
 import Checkbox from "./checkbox";
-import { getEvents } from "../../store/slices/events";
+
 import Loader from "./loader";
 
 import config from "../../auxuliary.json";

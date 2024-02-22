@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { userToEdit } from "../../store/slices/accounts";
-import { deleteUser } from "../../store/slices/accounts";
-import { getAllAccs } from "../../store/slices/accounts";
+import {
+  userToEdit,
+  getAllAccs,
+  deleteUser,
+} from "../../store/slices/accounts";
 import ConfirmAction from "../modals/confirm-action";
 
 const Managing = () => {

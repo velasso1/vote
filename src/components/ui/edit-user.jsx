@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserData } from "../../store/slices/accounts";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EditTextField from "../fields/edit-text-filed";
 import Success from "../modals/success";
 import config from "../../auxuliary.json";
