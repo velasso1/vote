@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   animation: create-event 1s forwards;
+  padding-top: 10vh;
 
   &__title {
     margin: 30px 0;
@@ -43,5 +44,29 @@
 
   &__delete:hover {
     background-color: tomato;
+  }
+}
+
+@media screen and (max-width: 1199.98px) {
+  .managing {
+    &__title {
+      font-size: 25px;
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .managing {
+    &__title {
+      font-size: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .managing {
+    &__list {
+      width: 440px;
+    }
   }
 }

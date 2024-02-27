@@ -4,6 +4,7 @@
   text-align: center;
   align-items: center;
   animation: create-event 1s forwards;
+  padding-top: 10vh;
 
   &__info {
     position: relative;
@@ -68,4 +69,30 @@
   position: relative;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width: 1199.98px) {
+  .create-user {
+    &__title {
+      font-size: 25px;
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .create-user {
+    &__title {
+      font-size: 20px;
+    }
+
+    &__login,
+    &__password,
+    &__repeatPassword {
+      width: 400px;
+    }
+
+    &__buttons {
+      width: 400px;
+    }
+  }
 }

@@ -66,3 +66,60 @@
     width: 112.387px;
   }
 }
+
+@media screen and (max-width: 1199.98px) {
+  .header {
+    &__title {
+      font-size: 25px;
+    }
+
+    &__subtitle {
+      font-size: 20px;
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .header {
+    &__logo {
+      width: 70px;
+    }
+
+    &__title {
+      font-size: 20px;
+    }
+
+    &__subtitle {
+      font-size: 15px;
+    }
+
+    &__back-item {
+      left: 20%;
+    }
+
+    &__back-item_forward {
+      left: 70%;
+    }
+
+    &__menu-item {
+      font-size: 12px;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .header {
+    &__menu {
+      flex-direction: column-reverse;
+    }
+
+    &__menu-item:nth-child(-n + 1) {
+      margin-top: 30px;
+    }
+
+    &__subtitle {
+      width: 280px;
+      line-height: 20px;
+    }
+  }
+}

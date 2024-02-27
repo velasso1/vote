@@ -1,8 +1,9 @@
+$indentation: 20vh;
+
 .login {
   display: flex;
   justify-content: center;
-  margin: 20px 0 0 0;
-  // font-family: 'Open Sans', sans-serif;
+  margin: $indentation;
 
   &__form {
     display: flex;
@@ -23,5 +24,11 @@
     margin: 5px;
     border-radius: 5px;
     border: 2px solid black;
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .header {
+    justify-content: space-between;
   }
 }

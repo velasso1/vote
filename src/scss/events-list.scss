@@ -18,12 +18,15 @@ $bgcolor: #efedcf;
   }
 
   &__list {
-    display: flex;
-    width: 1100px;
-    margin: 0 auto;
+    display: grid;
+    gap: 40px;
+    grid-template-areas: ". . . .";
     justify-content: center;
-    flex-wrap: wrap;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
     animation: events 1s forwards;
+    padding-top: 10vh;
   }
 
   &__item {
@@ -31,7 +34,7 @@ $bgcolor: #efedcf;
     display: flex;
     flex-direction: column;
     width: 250px;
-    margin: 25px;
+    // margin: 25px;
     background-color: #efedcf;
     border-radius: 5px;
     border: 1px solid black;
@@ -123,7 +126,7 @@ $bgcolor: #efedcf;
   }
 
   &__empty {
-    margin-top: 50px;
+    margin-top: $indentation;
     font-size: 20px;
   }
 
@@ -140,7 +143,7 @@ $bgcolor: #efedcf;
 
   &__admin-button {
     background-color: #17155c;
-
+    width: 300px;
     padding: 10px 25px;
     font-size: 15px;
     border-radius: 5px;
@@ -174,5 +177,115 @@ $bgcolor: #efedcf;
   }
   100% {
     opacity: 100%;
+  }
+}
+
+@media screen and (max-width: 1199.98px) {
+  .events {
+    width: 1000px;
+
+    &__list {
+      width: 1000px;
+      grid-template-areas: ". . .";
+      gap: 15px;
+    }
+
+    &__status {
+      font-size: 12px;
+    }
+
+    &__delete-icon {
+      top: -50%;
+      left: 90%;
+    }
+
+    &__item {
+      margin: 20px;
+      width: 230px;
+    }
+  }
+}
+
+@media screen and (max-width: 991.98px) {
+  .events {
+    width: 840px;
+
+    &__list {
+      width: 840px;
+    }
+
+    &__admin-menu {
+      flex-direction: column;
+      align-items: center;
+      margin: 30px;
+    }
+
+    &__admin-button {
+      padding: 10px 15px;
+    }
+
+    &__admin-button:nth-child(-n + 2) {
+      margin-right: 0px;
+      margin-bottom: 10px;
+    }
+
+    &__item {
+      margin: 10px;
+      width: 202px;
+    }
+
+    &__delete-icon {
+      left: 87%;
+    }
+
+    &__description {
+      max-height: 75px;
+    }
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .events {
+    width: 690px;
+
+    &__checkbox {
+      width: 12px;
+    }
+
+    &__list {
+      width: 690px;
+      grid-template-areas: ". .";
+    }
+
+    &__filter label,
+    &__desc {
+      font-size: 15px;
+    }
+
+    &__admin-button {
+      font-size: 12px;
+    }
+  }
+}
+
+@media screen and (max-width: 575.98px) {
+  .events {
+    width: 480px;
+
+    &__list {
+      padding-top: 5vh;
+      width: 480px;
+      gap: 2px;
+    }
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .events {
+    width: 400px;
+    &__list {
+      width: 400px;
+      grid-template-areas: ".";
+    }
   }
 }

@@ -10,6 +10,7 @@ const initialState = {
   statusLoading: false,
   isVoted: false,
   tokenIsValid: false,
+  confirmDeleting: false,
 };
 
 const user = createSlice({
@@ -78,6 +79,10 @@ const user = createSlice({
       state.isAdmin = false;
       state.tokenIsValid = false;
       localStorage.removeItem("uinfo");
+    },
+
+    setConfirmDeleting(state, action) {
+      state.confirmDeleting = action.payload;
     },
   },
 });
@@ -190,6 +195,7 @@ export const {
   signOut,
   setStatus,
   setVoted,
+  setConfirmDeleting,
 } = user.actions;
 
 export default user.reducer;
