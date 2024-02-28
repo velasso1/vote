@@ -1,15 +1,26 @@
 import React from "react";
 
-const TextField = ({ disabled, id, state, userData, setUserData, text }) => {
+const TextField = ({
+  disabled,
+  id,
+  state,
+  userData,
+  setUserData,
+  text,
+  elem,
+  type,
+}) => {
   return (
     <>
       <label htmlFor={id}>{text}</label>
       <input
-        type="text"
+        type={type === "pass" ? "password" : "text"}
         placeholder={text}
         id={id}
         disabled={disabled}
-        className={`create-user__${id}`}
+        className={
+          elem !== "create" ? `create-user__${id}` : `create-event__${id}`
+        }
         value={userData[`${id}`]}
         onChange={(e) => {
           setUserData({ ...userData, [id]: e.target.value.trim() });

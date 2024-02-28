@@ -18,7 +18,8 @@
   &__login,
   &__password,
   &__name,
-  &__surname {
+  &__surname,
+  &__repeatPassword {
     margin: 5px 0 20px 0;
     padding: 5px 0 5px 5px;
     border-radius: 5px;
@@ -61,7 +62,8 @@
 @media screen and (max-width: 575.98px) {
   .edit-user {
     &__login,
-    &__password {
+    &__password,
+    &__repeatPassword {
       width: 400px;
     }
   }

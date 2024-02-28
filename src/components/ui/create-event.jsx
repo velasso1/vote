@@ -4,6 +4,8 @@ import { createEvent, updateEvent } from "../../store/slices/events";
 import { useNavigate } from "react-router-dom";
 import { getAllAccs } from "../../store/slices/accounts";
 import Loader from "./loader";
+import TextField from "../fields/text-field";
+import config from "../../auxuliary.json";
 
 const CreateEvent = ({ eventData, path, id }) => {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ const CreateEvent = ({ eventData, path, id }) => {
     accepted: 0,
     denied: 0,
     votingUsers: eventData ? eventData.votingUsers : [],
+    fullNameOfTheCandidate: eventData ? eventData.fullNameOfTheCandidate : "",
   });
 
   const [votedPeoples, setVotedPeoples] = useState(
@@ -101,6 +104,7 @@ const CreateEvent = ({ eventData, path, id }) => {
       accepted: 0,
       denied: 0,
       votedPeoples: [],
+      fullNameOfTheCandidate: "",
     });
     setVotedPeoples([]);
     setState({ error: false, empty: false });
@@ -122,19 +126,20 @@ const CreateEvent = ({ eventData, path, id }) => {
         </span>
       )}
       <div className="create-event__info">
-        <label htmlFor="name">Введите название события</label>
-        <input
-          disabled={sendingStatus}
-          style={{
-            borderColor: state.empty && eventInfo.name === "" ? "red" : "black",
-          }}
-          onChange={(e) => setEventInfo({ ...eventInfo, name: e.target.value })}
-          value={eventInfo.name}
-          className="create-event__name"
-          type="text"
-          name="name"
-          placeholder="Введите название"
-        />
+        {config.fieldsForCreateEvent.map((item, index) => {
+          return (
+            <TextField
+              key={index}
+              disabled={sendingStatus}
+              text={item.text}
+              state={state}
+              userData={eventInfo}
+              setUserData={setEventInfo}
+              id={item.id}
+              elem={"create"}
+            />
+          );
+        })}
 
         <label htmlFor="description">Введите описание события</label>
         <textarea
@@ -152,25 +157,6 @@ const CreateEvent = ({ eventData, path, id }) => {
           placeholder="Введите описание"
         />
 
-        <label htmlFor="quantity">Введите нужное количество голосов</label>
-        <input
-          disabled={sendingStatus}
-          style={{
-            borderColor:
-              (state.empty && eventInfo.numberOfVotes === "") || 0
-                ? "red"
-                : "black",
-          }}
-          onChange={(e) =>
-            setEventInfo({ ...eventInfo, numberOfVotes: +e.target.value })
-          }
-          value={eventInfo.numberOfVotes}
-          className="create-event__quantity"
-          type="number"
-          min={1}
-          name="quantity"
-          placeholder="Количество голосов должно быть больше 0"
-        />
         {state.error && (
           <span className="create-event__clue">
             *Введенное количество должно совпадать с количеством выбранных людей{" "}

@@ -118,19 +118,32 @@
     { "id": "8", "login": "Burlakov", "surname": "Бурлаков", "name": "Алексей" }
   ],
   "textFieldsUser": [
-    { "id": "login", "text": "Введите логин" },
-    { "id": "password", "text": "Введите пароль" },
-    { "id": "repeatPassword", "text": "Повторите пароль" }
+    { "id": "login", "text": "Введите логин", "for": "log" },
+    { "id": "password", "text": "Введите пароль", "for": "pass" },
+    { "id": "repeatPassword", "text": "Повторите пароль", "for": "pass" }
   ],
 
   "editUserFields": [
     {
       "placeholder": "Введите логин",
-      "className": "login"
+      "className": "login",
+      "for": "log"
     },
     {
       "placeholder": "Введите пароль",
-      "className": "password"
+      "className": "password",
+      "for": "pass"
+    },
+    {
+      "placeholder": "Повторите пароль",
+      "className": "repeatPassword",
+      "for": "pass"
     }
+  ],
+  "fieldsForCreateEvent": [
+    { "text": "Введите название события", "id": "name" },
+    { "text": "Введите ФИО кандидата", "id": "candidate-name" },
+    { "text": "Введите ученое звание", "id": "candidate-degree" },
+    { "text": "Введите нужное количество голосов", "id": "quantity" }
   ]
 }

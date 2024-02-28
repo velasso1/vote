@@ -8,10 +8,11 @@ const EditTextField = ({
   setUserInfo,
   disable,
   state,
+  type,
 }) => {
   return (
     <input
-      type="text"
+      type={type === "pass" ? "password" : "text"}
       disabled={disable}
       placeholder={placeholder}
       className={`edit-user__${className}`}

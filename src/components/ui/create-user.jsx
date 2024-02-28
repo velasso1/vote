@@ -63,6 +63,7 @@ const CreateUser = () => {
               setUserData={setUserData}
               id={item.id}
               text={item.text}
+              type={item.for}
             />
           );
         })}
@@ -86,8 +87,8 @@ const CreateUser = () => {
           disabled={sendingStatus}
           className="create-user__button"
           onClick={() => {
-            setUserData({ login: "", password: "", name: "", surname: "" });
-            setState({ ...state, error: false, empty: false });
+            setUserData({ login: "", password: "", repeatPassword: "" });
+            setState({ difPass: false, error: false, empty: false });
           }}
         >
           Отмена

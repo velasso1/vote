@@ -17,16 +17,23 @@ const EditUser = () => {
   const [state, setState] = useState({
     error: false,
     empty: false,
+    difPass: false,
   });
 
   const [userInfo, setUserInfo] = useState({
     login: dataForUpdate.login,
     password: "",
+    repeatPassword: "",
   });
 
   const updateInfo = () => {
     if (userInfo.password.length < 8 || userInfo.login.length < 2) {
       setState({ ...state, error: true });
+      return;
+    }
+
+    if (userInfo.password !== userInfo.repeatPassword) {
+      setState({ error: false, empty: false, difPass: true });
       return;
     }
     dispatch(updateUserData(userInfo, params.id));
@@ -53,6 +60,7 @@ const EditUser = () => {
               setUserInfo={setUserInfo}
               disable={openModal}
               state={state}
+              type={item.for}
             />
           );
         })}
@@ -62,6 +70,11 @@ const EditUser = () => {
         {state.error && (
           <span className="create-event__clue">
             *Длина пароля должна быть не менее 8 символов
+          </span>
+        )}
+        {state.difPass && (
+          <span style={{ color: "red", margin: "0 0 20px 0" }}>
+            *Пароли не совпадают
           </span>
         )}
         <button
