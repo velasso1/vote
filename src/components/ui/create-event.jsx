@@ -35,6 +35,7 @@ const CreateEvent = ({ eventData, path, id }) => {
     denied: 0,
     votingUsers: eventData ? eventData.votingUsers : [],
     fullNameOfTheCandidate: eventData ? eventData.fullNameOfTheCandidate : "",
+    academicDegree: eventData ? eventData.academicDegree : "",
   });
 
   const [votedPeoples, setVotedPeoples] = useState(
@@ -51,6 +52,7 @@ const CreateEvent = ({ eventData, path, id }) => {
     for (let key in eventInfo) {
       if (eventInfo[key] === "") {
         setState({ ...state, empty: true });
+        console.log(eventInfo[key]);
         return;
       }
     }
@@ -105,6 +107,7 @@ const CreateEvent = ({ eventData, path, id }) => {
       denied: 0,
       votedPeoples: [],
       fullNameOfTheCandidate: "",
+      academicDegree: "",
     });
     setVotedPeoples([]);
     setState({ error: false, empty: false });

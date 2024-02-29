@@ -30,8 +30,8 @@ $text-width: 500px;
   }
 
   &__name,
-  &__candidate-name,
-  &__candidate-degree {
+  &__fullNameOfTheCandidate,
+  &__academicDegree {
     @include marginElem();
   }
 
@@ -43,7 +43,7 @@ $text-width: 500px;
     @include marginElem();
   }
 
-  &__quantity {
+  &__numberOfVotes {
     @include marginElem();
   }
 
@@ -97,8 +97,10 @@ $text-width: 500px;
     margin-bottom: 20px;
   }
 
-  &__button {
+  &__button,
+  &__print-button {
     background-color: #17155c;
+    margin-bottom: 15px;
     padding: 10px 25px;
     font-size: 15px;
     border-radius: 5px;
@@ -107,7 +109,8 @@ $text-width: 500px;
     color: #fff;
   }
 
-  &__button:hover {
+  &__button:hover,
+  &__print-button:hover {
     background-color: #29508e;
   }
 
@@ -163,9 +166,9 @@ $text-width: 500px;
     &__name,
     &__buttons,
     &__description,
-    &__quantity,
-    &__candidate-name,
-    &__candidate-degree {
+    &__numberOfVotes,
+    &__fullNameOfTheCandidate,
+    &__academicDegree {
       width: $text-width;
     }
   }

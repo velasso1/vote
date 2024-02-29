@@ -13,6 +13,7 @@ import CreateUserPage from "./pages/create-user-page";
 import ManageUsersPage from "./pages/manage-users-page";
 import EditUserPage from "./pages/edit-user-page";
 import EditEventPage from "./pages/edit-event-page";
+import PrintPage from "./pages/print-page";
 
 function App() {
   return (
@@ -51,6 +52,11 @@ function App() {
         <Route
           path="/edit-event/:id"
           element={<PrivateRoute children={<EditEventPage />} />}
+        />
+
+        <Route
+          path="/print-result/:id"
+          element={<PrivateRoute children={<PrintPage />} />}
         />
       </Routes>
     </>

@@ -153,6 +153,13 @@ const CurrentEvent = () => {
             >
               Редактировать
             </button>
+
+            <button
+              className="create-event__print-button"
+              onClick={(e) => navigate(`/print-result/${currentEvent._id}`)}
+            >
+              Просмотреть версию для печати
+            </button>
           </div>
         </div>
       )}

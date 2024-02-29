@@ -20,6 +20,11 @@
   &__status {
     margin: 10px 0;
   }
+
+  &__edit-event {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 table,

@@ -1,0 +1,92 @@
+$contentWidth: 630px;
+.print {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 0 0 0;
+  font-family: "Times New Roman", serif;
+  font-size: 19px;
+
+  &__content {
+    width: 700px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  &__title h1 {
+    font-size: 19px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+  }
+
+  &__subtitle {
+    line-height: 1.5;
+    width: $contentWidth;
+  }
+
+  &__date {
+    padding: 15px 0 25px 0;
+  }
+
+  //   &__compound {
+  //     display: flex;
+  //     align-items: flex;
+  //     text-align: left;
+  //   }
+
+  &__about {
+    span {
+      padding-left: 40px;
+    }
+    text-align: justify;
+    width: $contentWidth;
+    line-height: 1.5;
+  }
+
+  &__nameOfCandidate {
+    padding: 20px 0;
+    text-align: center;
+  }
+
+  &__result {
+    width: $contentWidth;
+    p {
+      margin: 10px 0;
+    }
+    display: flex;
+    flex-direction: column;
+    // align-items: flex-start;
+    text-align: justify;
+    margin: 0 0 20px 0;
+  }
+
+  &__staff {
+    width: $contentWidth;
+    margin: 50px 0 0 0;
+    text-align: left;
+  }
+}
+
+@media print {
+  .header {
+    display: none;
+  }
+
+  a[href]:after {
+    content: none;
+  }
+  @page {
+    margin: 0;
+  }
+
+  .print {
+    font-size: 14pt;
+    padding: 60px 76px 76px 114px;
+
+    &__button {
+      display: none;
+    }
+  }
+}
