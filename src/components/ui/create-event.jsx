@@ -25,17 +25,17 @@ const CreateEvent = ({ eventData, path, id }) => {
 
   const [eventInfo, setEventInfo] = useState({
     // check eventData for update event information. For create event value === ''
-    name: eventData ? eventData.name : "",
-    description: eventData ? eventData.description : "",
+    name: eventData?.name || "",
+    description: eventData?.description || "",
     dateCreated: new Date().getTime(),
-    dateEvent: eventData ? eventData.dateEvent : "",
-    numberOfVotes: eventData ? eventData.numberOfVotes : "",
-    isFinished: false,
-    accepted: 0,
-    denied: 0,
-    votingUsers: eventData ? eventData.votingUsers : [],
-    fullNameOfTheCandidate: eventData ? eventData.fullNameOfTheCandidate : "",
-    academicDegree: eventData ? eventData.academicDegree : "",
+    dateEvent: eventData?.dateEvent || "",
+    numberOfVotes: eventData?.numberOfVotes || "",
+    isFinished: eventData?.isFinished || false,
+    accepted: eventData?.accepted || 0,
+    denied: eventData?.denied || 0,
+    votingUsers: eventData?.votingUsers || [],
+    fullNameOfTheCandidate: eventData?.fullNameOfTheCandidate || "",
+    academicDegree: eventData?.academicDegree || "",
   });
 
   const [votedPeoples, setVotedPeoples] = useState(

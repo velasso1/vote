@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrentEvent } from "../store/slices/events";
+import Loader from "../components/ui/loader";
 
 const PrintPage = () => {
+  const dispatch = useDispatch();
+  const { id } = useParams();
+
+  useEffect(() => {
+    dispatch(getCurrentEvent(id));
+  }, []);
+
+  const { currentEvent, sendingStatus } = useSelector((state) => state.events);
+  const date = new Date(currentEvent.dateEvent).toLocaleDateString();
+
   return (
     <div className="print">
+      {!sendingStatus ? <></> : <Loader />}
       <div className="print__content">
         <div className="print__title">
           <h1>
@@ -20,7 +35,7 @@ const PrintPage = () => {
         </div>
         <div className="print__date">
           <p>
-            <b>от DATE</b>
+            <b>от {date}</b>
           </p>
         </div>
 
@@ -30,14 +45,15 @@ const PrintPage = () => {
         <div className="print__about">
           <p>
             <span>Комиссия</span> избрана для подсчета голосов при тайном
-            голосовании по вопросу о присуждении <b>fullNameOfTheCandidate</b>{" "}
-            учетной степени academicDegree.
+            голосовании по вопросу о присуждении{" "}
+            <b>{currentEvent.fullNameOfTheCandidate}</b> учетной степени
+            {currentEvent.academicDegree}.
           </p>
           <p>
-            <span>Состав</span> диссертационного совета утвержден в количестве{" "}
-            <b>numberOfVotes </b>
-            на срок действия Номенклатуры научных специальностей, по которым
-            присуждаются ученые степени.
+            <span>Состав</span> диссертационного совета утвержден в количестве
+            <b> {currentEvent.numberOfVotes} </b> человек на срок действия
+            Номенклатуры научных специальностей, по которым присуждаются ученые
+            степени.
           </p>
           <p>
             <span>Присутствовало</span> на заседании ___ членов совета, в том
@@ -45,15 +61,15 @@ const PrintPage = () => {
           </p>
           <p>
             <span>Результаты</span> голосования по вопросу о присуждении ученой
-            степени <b>academicDegree</b>
+            степени <b>{currentEvent.academicDegree}</b>
           </p>
           <p className="print__nameOfCandidate">
-            <b>fullNameOfTheCandidate</b>
+            <b>{currentEvent.fullNameOfTheCandidate}</b>
           </p>
         </div>
         <div className="print__result">
-          <p>За: acceptedVotes</p>
-          <p>Против: deniedVotes</p>
+          <p>За: {currentEvent.accepted}</p>
+          <p>Против: {currentEvent.denied}</p>
         </div>
         <div className="print__staff">
           <p>Члены счетной комиссии</p>
@@ -61,7 +77,11 @@ const PrintPage = () => {
           <p>Председатель счетной комисии</p>
         </div>
       </div>
-      <button className="print__button" onClick={() => window.print()}>
+      <button
+        disabled={!sendingStatus && currentEvent.length === 0}
+        className="print__button"
+        onClick={() => window.print()}
+      >
         печать
       </button>
     </div>
