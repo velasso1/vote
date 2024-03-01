@@ -15,6 +15,7 @@ const CreateUser = () => {
   const [userData, setUserData] = useState({
     login: "",
     password: "",
+    fullName: "",
     repeatPassword: "",
   });
 
@@ -41,7 +42,7 @@ const CreateUser = () => {
     }
 
     dispatch(createNewUser(userData));
-    setUserData({ login: "", password: "", repeatPassword: "" });
+    setUserData({ login: "", password: "", fullName: "", repeatPassword: "" });
     setState({ error: false, empty: false });
     dispatch(getAllAccs());
     setTimeout(() => {

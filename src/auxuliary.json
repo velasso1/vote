@@ -119,6 +119,7 @@
   ],
   "textFieldsUser": [
     { "id": "login", "text": "Введите логин", "for": "log" },
+    { "id": "fullName", "text": "Введите ФИО пользователя", "for": "name" },
     { "id": "password", "text": "Введите пароль", "for": "pass" },
     { "id": "repeatPassword", "text": "Повторите пароль", "for": "pass" }
   ],
@@ -128,6 +129,11 @@
       "placeholder": "Введите логин",
       "className": "login",
       "for": "log"
+    },
+    {
+      "className": "fullName",
+      "placeholder": "Введите ФИО пользователя",
+      "for": "name"
     },
     {
       "placeholder": "Введите пароль",

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentEvent } from "../store/slices/events";
 import Loader from "../components/ui/loader";
+import { getAllAccs } from "../store/slices/accounts";
 
 const PrintPage = () => {
   const dispatch = useDispatch();
@@ -10,10 +11,16 @@ const PrintPage = () => {
 
   useEffect(() => {
     dispatch(getCurrentEvent(id));
-  }, []);
+    dispatch(getAllAccs());
+  }, [dispatch, id]);
 
   const { currentEvent, sendingStatus } = useSelector((state) => state.events);
+  const { accounts } = useSelector((state) => state.accounts);
   const date = new Date(currentEvent.dateEvent).toLocaleDateString();
+
+  const peoplesIncludesInCommission = accounts.filter((item) => {
+    return currentEvent.membersOfTheCountingCommission.includes(item._id);
+  });
 
   return (
     <div className="print">
@@ -39,14 +46,23 @@ const PrintPage = () => {
           </p>
         </div>
 
-        {/* <div className="print__compound">
-          <p>Состав избранной комиссии:</p>
-        </div> */}
+        <div className="print__compound">
+          <p>
+            Состав избранной комиссии:{" "}
+            {peoplesIncludesInCommission.map((item, index) => {
+              return (
+                <span key={index}>{`${item.fullName}${
+                  index + 1 === peoplesIncludesInCommission.length ? "." : ", "
+                }`}</span>
+              );
+            })}
+          </p>
+        </div>
         <div className="print__about">
           <p>
             <span>Комиссия</span> избрана для подсчета голосов при тайном
             голосовании по вопросу о присуждении{" "}
-            <b>{currentEvent.fullNameOfTheCandidate}</b> учетной степени
+            <b>{currentEvent.fullNameOfTheCandidate}</b> ученой степени&nbsp;
             {currentEvent.academicDegree}.
           </p>
           <p>
@@ -78,7 +94,7 @@ const PrintPage = () => {
         </div>
       </div>
       <button
-        disabled={!sendingStatus && currentEvent.length === 0}
+        disabled={!currentEvent.isFinished}
         className="print__button"
         onClick={() => window.print()}
       >

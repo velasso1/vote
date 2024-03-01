@@ -23,7 +23,10 @@ const TextField = ({
         }
         value={userData[`${id}`]}
         onChange={(e) => {
-          setUserData({ ...userData, [id]: e.target.value.trim() });
+          setUserData({
+            ...userData,
+            [id]: id === "fullName" ? e.target.value : e.target.value.trim(),
+          });
         }}
         style={{
           borderColor:

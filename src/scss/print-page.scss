@@ -9,6 +9,7 @@ $contentWidth: 630px;
 
   &__content {
     width: 700px;
+    margin-bottom: 30px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -30,11 +31,13 @@ $contentWidth: 630px;
     padding: 15px 0 25px 0;
   }
 
-  //   &__compound {
-  //     display: flex;
-  //     align-items: flex;
-  //     text-align: left;
-  //   }
+  &__compound {
+    width: 630px;
+    display: flex;
+    align-items: flex;
+    text-align: justify;
+    line-height: 1.5;
+  }
 
   &__about {
     span {
@@ -69,15 +72,15 @@ $contentWidth: 630px;
   }
 
   &__button {
-    font-family: 'Open Sans', serif;
-      background-color: #17155c;
-      margin-bottom: 15px;
-      padding: 10px 25px;
-      font-size: 15px;
-      border-radius: 5px;
-      transition: 0.2s;
-      font-weight: 500;
-      color: #fff;
+    font-family: "Open Sans", serif;
+    background-color: #17155c;
+    margin-bottom: 15px;
+    padding: 10px 25px;
+    font-size: 15px;
+    border-radius: 5px;
+    transition: 0.2s;
+    font-weight: 500;
+    color: #fff;
   }
 
   &__button::first-letter {

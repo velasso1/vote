@@ -23,6 +23,7 @@ const EditUser = () => {
   const [userInfo, setUserInfo] = useState({
     login: dataForUpdate.login,
     password: "",
+    fullName: dataForUpdate.fullName,
     repeatPassword: "",
   });
 

@@ -51,6 +51,7 @@ $text-width: 500px;
     display: flex;
     margin: 20px 0;
     justify-content: space-between;
+    align-items: center;
     width: $text-width;
   }
 
@@ -58,6 +59,10 @@ $text-width: 500px;
   &__right {
     display: flex;
     flex-direction: column;
+  }
+
+  &__right {
+    margin-top: 30px;
   }
 
   &__clue {
@@ -117,6 +122,18 @@ $text-width: 500px;
   &__date {
     border: 1px solid black;
     padding: 5px;
+  }
+
+  &__members-of-commission {
+    margin-left: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  &__subtitle-members {
+    width: 220px;
+    text-align: center;
+    margin-top: 5px;
   }
 }
 

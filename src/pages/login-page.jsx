@@ -33,7 +33,6 @@ const LoginPage = () => {
       setState({ empty: true });
       return;
     }
-
     dispatch(signIn(userData));
     dispatch(
       setUser({ login: `${userData.login}`, password: `${userData.password}` })

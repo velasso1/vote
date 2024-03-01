@@ -5,6 +5,7 @@ import AcceptedVote from "../modals/accepted-vote";
 import { makeChoice, checkVoiting } from "../../store/slices/user";
 import { getCurrentEvent } from "../../store/slices/events";
 import Loader from "../ui/loader";
+import { getAllAccs } from "../../store/slices/accounts";
 
 const CurrentEvent = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const CurrentEvent = () => {
 
   useEffect(() => {
     dispatch(getCurrentEvent(id));
+    dispatch(getAllAccs());
   }, [dispatch, id]);
 
   useEffect(() => {

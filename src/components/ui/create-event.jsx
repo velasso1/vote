@@ -34,6 +34,8 @@ const CreateEvent = ({ eventData, path, id }) => {
     accepted: eventData?.accepted || 0,
     denied: eventData?.denied || 0,
     votingUsers: eventData?.votingUsers || [],
+    membersOfTheCountingCommission:
+      eventData?.membersOfTheCountingCommission || [],
     fullNameOfTheCandidate: eventData?.fullNameOfTheCandidate || "",
     academicDegree: eventData?.academicDegree || "",
   });
@@ -52,7 +54,6 @@ const CreateEvent = ({ eventData, path, id }) => {
     for (let key in eventInfo) {
       if (eventInfo[key] === "") {
         setState({ ...state, empty: true });
-        console.log(eventInfo[key]);
         return;
       }
     }
@@ -83,12 +84,33 @@ const CreateEvent = ({ eventData, path, id }) => {
     setVotedPeoples([...votedPeoples, item]);
   };
 
-  const deletePeople = (user) => {
+  const deletePeople = (user, target) => {
+    if (target.tagName === "INPUT") {
+      return;
+    }
     setEventInfo({
       ...eventInfo,
       votingUsers: eventInfo.votingUsers.filter((item) => item !== user._id),
     });
     setVotedPeoples(votedPeoples.filter((item) => item._id !== user._id));
+  };
+
+  const addMemberToCommission = (id) => {
+    !eventInfo.membersOfTheCountingCommission.includes(id)
+      ? setEventInfo({
+          ...eventInfo,
+          membersOfTheCountingCommission: [
+            ...eventInfo.membersOfTheCountingCommission,
+            id,
+          ],
+        })
+      : setEventInfo({
+          ...eventInfo,
+          membersOfTheCountingCommission:
+            eventInfo.membersOfTheCountingCommission.filter(
+              (item) => item !== id
+            ),
+        });
   };
 
   const sendData = () => {
@@ -106,6 +128,7 @@ const CreateEvent = ({ eventData, path, id }) => {
       accepted: 0,
       denied: 0,
       votedPeoples: [],
+      membersOfTheCountingCommission: [],
       fullNameOfTheCandidate: "",
       academicDegree: "",
     });
@@ -192,7 +215,7 @@ const CreateEvent = ({ eventData, path, id }) => {
                 <li
                   className="create-event__item"
                   key={index}
-                  onClick={() => choosePeople(item)}
+                  onClick={(e) => choosePeople(item, e.target)}
                 >
                   {item.login}
                 </li>
@@ -203,6 +226,10 @@ const CreateEvent = ({ eventData, path, id }) => {
 
         <div className="create-event__left">
           <span className="create-event__subtitle">Выбранные люди</span>
+          <span className="create-event__subtitle-members">
+            Отметьте людей, которые входят в счетную комисиию
+            <input type="checkbox" defaultChecked="checked" />
+          </span>
           <ul className="create-event__selected">
             {votedPeoples.length !== 0 ? (
               votedPeoples.map((item, index) => {
@@ -210,9 +237,19 @@ const CreateEvent = ({ eventData, path, id }) => {
                   <li
                     className="create-event__item"
                     key={index}
-                    onClick={() => deletePeople(item)}
+                    onClick={(e) => deletePeople(item, e.target)}
                   >
                     {item.login}
+                    <input
+                      type="checkbox"
+                      checked={eventInfo.membersOfTheCountingCommission.includes(
+                        item._id
+                      )}
+                      className="create-event__members-of-commission"
+                      onChange={(e) =>
+                        addMemberToCommission(item._id, e.target)
+                      }
+                    />
                   </li>
                 ) : null;
               })
