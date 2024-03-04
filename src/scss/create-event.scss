@@ -61,6 +61,12 @@ $text-width: 500px;
     flex-direction: column;
   }
 
+  &__title-box {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+  }
+
   &__right {
     margin-top: 30px;
   }

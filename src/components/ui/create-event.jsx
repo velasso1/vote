@@ -4,6 +4,7 @@ import { createEvent, updateEvent } from "../../store/slices/events";
 import { useNavigate } from "react-router-dom";
 import { getAllAccs } from "../../store/slices/accounts";
 import Loader from "./loader";
+import Tooltip from "../modals/tooltip";
 import TextField from "../fields/text-field";
 import config from "../../auxuliary.json";
 
@@ -84,13 +85,15 @@ const CreateEvent = ({ eventData, path, id }) => {
     setVotedPeoples([...votedPeoples, item]);
   };
 
-  const deletePeople = (user, target) => {
+  const deletePeople = (user, target, id) => {
     if (target.tagName === "INPUT") {
       return;
     }
     setEventInfo({
       ...eventInfo,
       votingUsers: eventInfo.votingUsers.filter((item) => item !== user._id),
+      membersOfTheCountingCommission:
+        eventInfo.membersOfTheCountingCommission.filter((item) => item !== id),
     });
     setVotedPeoples(votedPeoples.filter((item) => item._id !== user._id));
   };
@@ -142,10 +145,15 @@ const CreateEvent = ({ eventData, path, id }) => {
   return (
     <div className="create-event">
       {sendingStatus && <Loader />}
+      <div className="create-event__title-box">
+        <Tooltip
+          text={"ФИО кандидата должно быть в дательном падеже (Кому?)"}
+        />
+        <h1 className="create-event__title">
+          {path === "update" ? "Редактирование" : "Создание нового"} события
+        </h1>
+      </div>
 
-      <h1 className="create-event__title">
-        {path === "update" ? "Редактирование" : "Создание нового"} события
-      </h1>
       {state.empty && (
         <span className="create-event__clue">
           *Все поля должны быть заполнены
@@ -228,7 +236,6 @@ const CreateEvent = ({ eventData, path, id }) => {
           <span className="create-event__subtitle">Выбранные люди</span>
           <span className="create-event__subtitle-members">
             Отметьте людей, которые входят в счетную комисиию
-            <input type="checkbox" defaultChecked="checked" />
           </span>
           <ul className="create-event__selected">
             {votedPeoples.length !== 0 ? (
@@ -237,7 +244,7 @@ const CreateEvent = ({ eventData, path, id }) => {
                   <li
                     className="create-event__item"
                     key={index}
-                    onClick={(e) => deletePeople(item, e.target)}
+                    onClick={(e) => deletePeople(item, e.target, item._id)}
                   >
                     {item.login}
                     <input

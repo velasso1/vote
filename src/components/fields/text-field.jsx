@@ -25,7 +25,7 @@ const TextField = ({
         onChange={(e) => {
           setUserData({
             ...userData,
-            [id]: id === "fullName" ? e.target.value : e.target.value.trim(),
+            [id]: e.target.value,
           });
         }}
         style={{

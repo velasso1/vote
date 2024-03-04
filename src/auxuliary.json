@@ -148,8 +148,14 @@
   ],
   "fieldsForCreateEvent": [
     { "text": "Введите название события", "id": "name" },
-    { "text": "Введите ФИО кандидата", "id": "fullNameOfTheCandidate" },
-    { "text": "Введите ученое звание", "id": "academicDegree" },
+    {
+      "text": "Кому будет присуждаться ученая степень? (ФИО)",
+      "id": "fullNameOfTheCandidate"
+    },
+    {
+      "text": "Введите ученое звание кандидата",
+      "id": "academicDegree"
+    },
     { "text": "Введите нужное количество голосов", "id": "numberOfVotes" }
   ]
 }
