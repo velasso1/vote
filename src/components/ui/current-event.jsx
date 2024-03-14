@@ -7,6 +7,18 @@ import { getCurrentEvent } from "../../store/slices/events";
 import Loader from "../ui/loader";
 import { getAllAccs } from "../../store/slices/accounts";
 
+// import crypto from "crypto-js";
+
+// const cryptoObject = { one: 1, two: 2 };
+
+// let encrypt = crypto.Rabbit.encrypt(
+//   JSON.stringify(cryptoObject),
+//   "somepasskey"
+// ).toString();
+// let decrypt = JSON.parse(
+//   crypto.Rabbit.decrypt(encrypt, "somepasskey").toString(crypto.enc.Utf8)
+// );
+
 const CurrentEvent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -17,6 +29,7 @@ const CurrentEvent = () => {
   const [voted, setVoted] = useState({
     voted: false,
     canVote: false,
+    openEvent: false,
   });
   const { id } = useParams();
 
@@ -80,12 +93,12 @@ const CurrentEvent = () => {
         </div>
         {/* <div className="current-event__date">{currentEvent.dateOfCreate}</div> */}
         {/* if event is not finished and user includes in votingUsers array in this event */}
-        {!currentEvent.isFinished && voted.canVote ? (
+        {!currentEvent.isFinished && voted.canVote && voted.openEvent ? (
           <div
             className="current-event__buttons"
             onClick={(e) => voteFor(e.target)}
           >
-            {/* if user is not voted, render buttons, else render notif */}
+            {/* if user is not voted - render buttons, else render notif */}
             {!isVoted ? (
               <>
                 <button className="current-event__button support" name="sup">

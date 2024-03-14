@@ -84,16 +84,6 @@ const CreateUser = () => {
         >
           Создать учетную запись
         </button>
-        <button
-          disabled={sendingStatus}
-          className="create-user__button"
-          onClick={() => {
-            setUserData({ login: "", password: "", repeatPassword: "" });
-            setState({ difPass: false, error: false, empty: false });
-          }}
-        >
-          Отмена
-        </button>
       </div>
       <div className="create-user__notice">
         {state.error && (

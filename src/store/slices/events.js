@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { checkExpiresToken } from "./user";
+import crypto from "crypto-js";
 
 const initialState = {
   events: [],
@@ -60,7 +61,12 @@ export const getEvents = () => {
         method: "GET",
         headers: {
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("uinfo")).token
+            JSON.parse(
+              crypto.Rabbit.decrypt(
+                localStorage.getItem("uinfo"),
+                `${process.env.REACT_APP_PASS_KEY}`
+              ).toString(crypto.enc.Utf8)
+            ).token
           }`,
         },
       }).then((resp) => {
@@ -85,7 +91,12 @@ export const createEvent = (body) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("uinfo")).token
+            JSON.parse(
+              crypto.Rabbit.decrypt(
+                localStorage.getItem("uinfo"),
+                `${process.env.REACT_APP_PASS_KEY}`
+              ).toString(crypto.enc.Utf8)
+            ).token
           }`,
         },
         body: JSON.stringify(body),
@@ -105,7 +116,12 @@ export const deleteEvent = (id) => {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${
-            JSON.parse(localStorage.getItem("uinfo")).token
+            JSON.parse(
+              crypto.Rabbit.decrypt(
+                localStorage.getItem("uinfo"),
+                `${process.env.REACT_APP_PASS_KEY}`
+              ).toString(crypto.enc.Utf8)
+            ).token
           }`,
         },
       });
@@ -125,7 +141,12 @@ export const updateEvent = (body, id) => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer: ${
-            JSON.parse(localStorage.getItem("uinfo")).token
+            JSON.parse(
+              crypto.Rabbit.decrypt(
+                localStorage.getItem("uinfo"),
+                `${process.env.REACT_APP_PASS_KEY}`
+              ).toString(crypto.enc.Utf8)
+            ).token
           }`,
         },
         body: JSON.stringify(body),
@@ -150,7 +171,12 @@ export const getCurrentEvent = (id) => {
         method: "GET",
         headers: {
           Authorization: `Bearer: ${
-            JSON.parse(localStorage.getItem("uinfo")).token
+            JSON.parse(
+              crypto.Rabbit.decrypt(
+                localStorage.getItem("uinfo"),
+                `${process.env.REACT_APP_PASS_KEY}`
+              ).toString(crypto.enc.Utf8)
+            ).token
           }`,
         },
       }).then((resp) =>

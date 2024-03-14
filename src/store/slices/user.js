@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { changeSendingStatus } from "./events";
+import crypto from "crypto-js";
 
 const initialState = {
   login: null,
@@ -13,6 +14,8 @@ const initialState = {
   confirmDeleting: false,
 };
 
+let decryptedUInfo;
+
 const user = createSlice({
   name: "user",
   initialState,
@@ -22,15 +25,14 @@ const user = createSlice({
     },
 
     checkAuth(state) {
-      const { role, uid } = JSON.parse(localStorage.getItem("uinfo")) || "null";
+      const { role, uid } = decryptedUInfo || "null";
       state.isAuth = state.tokenIsValid;
       state.isAdmin = role === "admin";
       state.userId = uid;
     },
 
     checkExpiresToken(state) {
-      const { expiration } =
-        JSON.parse(localStorage.getItem("uinfo")) || "null";
+      const { expiration } = decryptedUInfo || "null";
       state.tokenIsValid = expiration > new Date().getTime();
       if (!state.tokenIsValid) {
         renewalToken();
@@ -59,13 +61,23 @@ const user = createSlice({
 
       localStorage.setItem(
         "uinfo",
-        JSON.stringify({
-          uid: userId,
-          token: token.accessToken,
-          refTok: token.refreshToken,
-          expiration: new Date().getTime() + token.expiresIn,
-          role: role,
-        })
+        crypto.Rabbit.encrypt(
+          JSON.stringify({
+            uid: userId,
+            token: token.accessToken,
+            refTok: token.refreshToken,
+            expiration: new Date().getTime() + token.expiresIn,
+            role: role,
+          }),
+          `${process.env.REACT_APP_PASS_KEY}`
+        )
+      );
+
+      decryptedUInfo = JSON.parse(
+        crypto.Rabbit.decrypt(
+          localStorage.getItem("uinfo"),
+          `${process.env.REACT_APP_PASS_KEY}`
+        ).toString(crypto.enc.Utf8)
       );
     },
 
@@ -123,9 +135,7 @@ export const makeChoice = (body) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer: ${
-            JSON.parse(localStorage.getItem("uinfo")).token
-          }`,
+          Authorization: `Bearer: ${decryptedUInfo.token}`,
         },
         body: JSON.stringify(body),
       }).then((resp) =>
@@ -149,9 +159,7 @@ export const checkVoiting = (id, uid) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer: ${
-            JSON.parse(localStorage.getItem("uinfo")).token
-          }`,
+          Authorization: `Bearer: ${decryptedUInfo.token}`,
         },
         body: JSON.stringify({ userId: uid }),
       }).then((resp) =>
@@ -174,7 +182,7 @@ export const renewalToken = () => {
         "Content-Type": "application/json",
       },
       payload: JSON.stringify({
-        refreshToken: `${JSON.parse(localStorage.getItem("uinfo")).refTok}`,
+        refreshToken: `${decryptedUInfo.refTok}`,
       }),
     }).then((resp) =>
       resp.json().then((data) => {
