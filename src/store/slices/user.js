@@ -12,9 +12,8 @@ const initialState = {
   isVoted: false,
   tokenIsValid: false,
   confirmDeleting: false,
+  decryptedUInfo: "null",
 };
-
-let decryptedUInfo;
 
 const user = createSlice({
   name: "user",
@@ -25,24 +24,26 @@ const user = createSlice({
     },
 
     checkAuth(state) {
-      const { role, uid } = decryptedUInfo || "null";
+      const { role, uid } = state.decryptedUInfo || "null";
       state.isAuth = state.tokenIsValid;
       state.isAdmin = role === "admin";
       state.userId = uid;
     },
 
     checkExpiresToken(state) {
-      // decryptedUInfo = JSON.parse(
-      //   crypto.Rabbit.decrypt(
-      //     localStorage.getItem("uinfo"),
-      //     `${process.env.REACT_APP_PASS_KEY}`
-      //   ).toString(crypto.enc.Utf8)
-      // );
+      if (localStorage.getItem("uinfo")) {
+        state.decryptedUInfo = JSON.parse(
+          crypto.Rabbit.decrypt(
+            localStorage.getItem("uinfo"),
+            `${process.env.REACT_APP_PASS_KEY}`
+          ).toString(crypto.enc.Utf8)
+        );
+      }
 
-      const { expiration } = decryptedUInfo || "null";
+      const { expiration } = state.decryptedUInfo || "null";
       state.tokenIsValid = expiration > new Date().getTime();
       if (!state.tokenIsValid) {
-        renewalToken();
+        renewalToken(state.decryptedUInfo);
       }
     },
 
@@ -80,7 +81,7 @@ const user = createSlice({
         )
       );
 
-      decryptedUInfo = JSON.parse(
+      state.decryptedUInfo = JSON.parse(
         crypto.Rabbit.decrypt(
           localStorage.getItem("uinfo"),
           `${process.env.REACT_APP_PASS_KEY}`
@@ -98,7 +99,7 @@ const user = createSlice({
       state.isAdmin = false;
       state.tokenIsValid = false;
       localStorage.removeItem("uinfo");
-      decryptedUInfo = "null";
+      state.decryptedUInfo = "null";
     },
 
     setConfirmDeleting(state, action) {
@@ -133,8 +134,8 @@ export const signIn = (body) => {
   };
 };
 
-export const makeChoice = (body) => {
-  return async (dispatch, state) => {
+export const makeChoice = (body, decryptedUInfo) => {
+  return async (dispatch) => {
     try {
       dispatch(checkExpiresToken());
       dispatch(changeSendingStatus(true));
@@ -158,11 +159,13 @@ export const makeChoice = (body) => {
   };
 };
 
-export const checkVoiting = (id, uid) => {
+export const checkVoiting = (id, uid, decryptedUInfo) => {
+  console.log(decryptedUInfo);
   return async (dispatch) => {
     try {
       dispatch(checkExpiresToken());
       dispatch(changeSendingStatus(true));
+
       await fetch(`${process.env.REACT_APP_CHECK_VOICE}${id}`, {
         method: "POST",
         headers: {
@@ -182,8 +185,8 @@ export const checkVoiting = (id, uid) => {
   };
 };
 
-export const renewalToken = () => {
-  return async (dispatch) => {
+export const renewalToken = (decryptedUInfo) => {
+  return async (dispatch, state) => {
     await fetch(`${process.env.REACT_APP_RENEWAL_TOKEN}`, {
       method: "POST",
       headers: {

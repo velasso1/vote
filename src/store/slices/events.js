@@ -51,7 +51,7 @@ const events = createSlice({
 
 // Actions
 
-export const getEvents = () => {
+export const getEvents = (decryptedUInfo) => {
   return async (dispatch) => {
     try {
       dispatch(changeSendingStatus(true));
@@ -59,14 +59,7 @@ export const getEvents = () => {
       await fetch(`${process.env.REACT_APP_ALL_EVENTS}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${
-            JSON.parse(
-              crypto.Rabbit.decrypt(
-                localStorage.getItem("uinfo"),
-                `${process.env.REACT_APP_PASS_KEY}`
-              ).toString(crypto.enc.Utf8)
-            ).token
-          }`,
+          Authorization: `Bearer ${decryptedUInfo.token}`,
         },
       }).then((resp) => {
         resp.json().then((data) => {
@@ -80,7 +73,7 @@ export const getEvents = () => {
   };
 };
 
-export const createEvent = (body) => {
+export const createEvent = (body, decryptedUInfo) => {
   return (dispatch) => {
     try {
       dispatch(changeSendingStatus(true));
@@ -89,14 +82,7 @@ export const createEvent = (body) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${
-            JSON.parse(
-              crypto.Rabbit.decrypt(
-                localStorage.getItem("uinfo"),
-                `${process.env.REACT_APP_PASS_KEY}`
-              ).toString(crypto.enc.Utf8)
-            ).token
-          }`,
+          Authorization: `Bearer ${decryptedUInfo.token}`,
         },
         body: JSON.stringify(body),
       });
@@ -107,21 +93,14 @@ export const createEvent = (body) => {
   };
 };
 
-export const deleteEvent = (id) => {
+export const deleteEvent = (id, decryptedUInfo) => {
   return async (dispatch) => {
     try {
       dispatch(checkExpiresToken());
       await fetch(`${process.env.REACT_APP_DELETE_EVENT}${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${
-            JSON.parse(
-              crypto.Rabbit.decrypt(
-                localStorage.getItem("uinfo"),
-                `${process.env.REACT_APP_PASS_KEY}`
-              ).toString(crypto.enc.Utf8)
-            ).token
-          }`,
+          Authorization: `Bearer ${decryptedUInfo.token}`,
         },
       });
     } catch (error) {
@@ -130,7 +109,7 @@ export const deleteEvent = (id) => {
   };
 };
 
-export const updateEvent = (body, id) => {
+export const updateEvent = (body, id, decryptedUInfo) => {
   return async (dispatch) => {
     try {
       dispatch(changeSendingStatus(true));
@@ -139,14 +118,7 @@ export const updateEvent = (body, id) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer: ${
-            JSON.parse(
-              crypto.Rabbit.decrypt(
-                localStorage.getItem("uinfo"),
-                `${process.env.REACT_APP_PASS_KEY}`
-              ).toString(crypto.enc.Utf8)
-            ).token
-          }`,
+          Authorization: `Bearer: ${decryptedUInfo.token}`,
         },
         body: JSON.stringify(body),
       }).then((resp) =>
@@ -161,22 +133,14 @@ export const updateEvent = (body, id) => {
   };
 };
 
-export const getCurrentEvent = (id) => {
+export const getCurrentEvent = (id, decryptedUInfo) => {
   return async (dispatch) => {
     try {
-      dispatch(changeSendingStatus(true));
       dispatch(checkExpiresToken());
       await fetch(`${process.env.REACT_APP_CURRENT_EVENT}${id}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer: ${
-            JSON.parse(
-              crypto.Rabbit.decrypt(
-                localStorage.getItem("uinfo"),
-                `${process.env.REACT_APP_PASS_KEY}`
-              ).toString(crypto.enc.Utf8)
-            ).token
-          }`,
+          Authorization: `Bearer: ${decryptedUInfo.token}`,
         },
       }).then((resp) =>
         resp.json().then((data) => {

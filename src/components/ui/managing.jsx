@@ -12,18 +12,19 @@ const Managing = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { accounts } = useSelector((state) => state.accounts);
+  const { decryptedUInfo } = useSelector((state) => state.user);
   const [confirm, setOpenConfirm] = useState(false);
   // id deleting user for props in ConfirmAction
   const [id, setId] = useState(null);
 
   useEffect(() => {
-    dispatch(getAllAccs());
+    dispatch(getAllAccs(decryptedUInfo));
   }, [dispatch]);
 
   const editUserData = (e, user) => {
     if (e.target.className === "managing__delete") return;
     navigate(`/edit-user/${user._id}`);
-    dispatch(userToEdit(user));
+    dispatch(userToEdit(user, decryptedUInfo));
   };
 
   const deleteAccount = (id) => {

@@ -5,13 +5,13 @@ import { checkExpiresToken, signOut } from "../../store/slices/user";
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const { isAuth } = useSelector((state) => state.user);
+  const { isAuth, decryptedUInfo } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(checkExpiresToken());
+    dispatch(checkExpiresToken(decryptedUInfo));
   }, [location]);
 
   const signOutFromAcc = () => {

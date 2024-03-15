@@ -12,6 +12,7 @@ const CreateUser = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { sendingStatus } = useSelector((state) => state.accounts);
+  const { decryptedUInfo } = useSelector((state) => state.user);
   const [userData, setUserData] = useState({
     login: "",
     password: "",
@@ -41,10 +42,10 @@ const CreateUser = () => {
       return;
     }
 
-    dispatch(createNewUser(userData));
+    dispatch(createNewUser(userData, decryptedUInfo));
     setUserData({ login: "", password: "", fullName: "", repeatPassword: "" });
     setState({ error: false, empty: false });
-    dispatch(getAllAccs());
+    dispatch(getAllAccs(decryptedUInfo));
     setTimeout(() => {
       navigate("/manage");
     }, 150);

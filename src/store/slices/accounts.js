@@ -39,21 +39,14 @@ const accounts = createSlice({
 
 // Actions
 
-export const getAllAccs = () => {
+export const getAllAccs = (decryptedUInfo) => {
   return (dispatch) => {
     try {
       dispatch(checkExpiresToken());
       fetch(`${process.env.REACT_APP_ALL_ACCOUNTS}`, {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${
-            JSON.parse(
-              crypto.Rabbit.decrypt(
-                localStorage.getItem("uinfo"),
-                `${process.env.REACT_APP_PASS_KEY}`
-              ).toString(crypto.enc.Utf8)
-            ).token
-          }`,
+          Authorization: `Bearer ${decryptedUInfo.token}`,
         },
       }).then((resp) =>
         resp.json().then((data) => {
@@ -66,7 +59,7 @@ export const getAllAccs = () => {
   };
 };
 
-export const updateUserData = (body, id) => {
+export const updateUserData = (body, id, decryptedUInfo) => {
   return async (dispatch) => {
     try {
       dispatch(changeSendingStatus(true));
@@ -75,14 +68,7 @@ export const updateUserData = (body, id) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer: ${
-            JSON.parse(
-              crypto.Rabbit.decrypt(
-                localStorage.getItem("uinfo"),
-                `${process.env.REACT_APP_PASS_KEY}`
-              ).toString(crypto.enc.Utf8)
-            ).token
-          }`,
+          Authorization: `Bearer: ${decryptedUInfo.token}`,
         },
         body: JSON.stringify(body),
       }).then((resp) =>
@@ -96,7 +82,7 @@ export const updateUserData = (body, id) => {
   };
 };
 
-export const deleteUser = (id) => {
+export const deleteUser = (id, decryptedUInfo) => {
   return async (dispatch) => {
     try {
       dispatch(changeSendingStatus(true));
@@ -104,14 +90,7 @@ export const deleteUser = (id) => {
       await fetch(`${process.env.REACT_APP_DELETE_ACCOUNT}${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer: ${
-            JSON.parse(
-              crypto.Rabbit.decrypt(
-                localStorage.getItem("uinfo"),
-                `${process.env.REACT_APP_PASS_KEY}`
-              ).toString(crypto.enc.Utf8)
-            ).token
-          }`,
+          Authorization: `Bearer: ${decryptedUInfo.token}`,
         },
       }).then((resp) =>
         resp.json().then((data) => {
@@ -124,7 +103,7 @@ export const deleteUser = (id) => {
   };
 };
 
-export const createNewUser = (body) => {
+export const createNewUser = (body, decryptedUInfo) => {
   return async (dispatch) => {
     try {
       dispatch(changeSendingStatus(true));
@@ -133,14 +112,7 @@ export const createNewUser = (body) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer: ${
-            JSON.parse(
-              crypto.Rabbit.decrypt(
-                localStorage.getItem("uinfo"),
-                `${process.env.REACT_APP_PASS_KEY}`
-              ).toString(crypto.enc.Utf8)
-            ).token
-          }`,
+          Authorization: `Bearer: ${decryptedUInfo.token}`,
         },
         body: JSON.stringify(body),
       })

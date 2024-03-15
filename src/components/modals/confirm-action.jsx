@@ -7,8 +7,10 @@ import { accountsFilter, getIdForDelete } from "../../store/slices/accounts";
 const ConfirmAction = ({ id, setConfirm, deleteAction }) => {
   const dispatch = useDispatch();
 
+  const { decryptedUInfo } = useSelector((state) => state.user);
+
   const deleting = () => {
-    dispatch(deleteAction(id));
+    dispatch(deleteAction(id, decryptedUInfo));
     // filter events array
     dispatch(eventsFilter());
     // taking uid for delete and filter account array

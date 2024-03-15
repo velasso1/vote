@@ -18,6 +18,7 @@ const CreateEvent = ({ eventData, path, id }) => {
 
   const { accounts } = useSelector((state) => state.accounts);
   const { sendingStatus } = useSelector((state) => state.events);
+  const { decryptedUInfo } = useSelector((state) => state.decryptedUInfo);
 
   const [state, setState] = useState({
     error: false,
@@ -118,8 +119,8 @@ const CreateEvent = ({ eventData, path, id }) => {
 
   const sendData = () => {
     path === "update"
-      ? dispatch(updateEvent(eventInfo, id))
-      : dispatch(createEvent(eventInfo));
+      ? dispatch(updateEvent(eventInfo, id, decryptedUInfo))
+      : dispatch(createEvent(eventInfo, decryptedUInfo));
     setEventInfo({
       ...eventInfo,
       name: "",

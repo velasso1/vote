@@ -10,7 +10,9 @@ import { getAllAccs } from "../../store/slices/accounts";
 const CurrentEvent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAdmin, userId, isVoted } = useSelector((state) => state.user);
+  const { isAdmin, userId, isVoted, decryptedUInfo } = useSelector(
+    (state) => state.user
+  );
   const { currentEvent, sendingStatus } = useSelector((state) => state.events);
 
   const [openModal, setOpenModal] = useState(false);
@@ -21,11 +23,11 @@ const CurrentEvent = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    dispatch(checkVoiting(id, userId));
+    dispatch(checkVoiting(id, userId, decryptedUInfo));
   }, [dispatch, id, userId]);
 
   useEffect(() => {
-    dispatch(getCurrentEvent(id));
+    dispatch(getCurrentEvent(id, decryptedUInfo));
     dispatch(getAllAccs());
   }, [dispatch, id]);
 
@@ -50,23 +52,29 @@ const CurrentEvent = () => {
 
     if (target.name === "sup") {
       dispatch(
-        makeChoice({
-          idEvent: id,
-          userId: userId,
-          accepted: true,
-          denied: false,
-        })
+        makeChoice(
+          {
+            idEvent: id,
+            userId: userId,
+            accepted: true,
+            denied: false,
+          },
+          decryptedUInfo
+        )
       );
       return;
     }
 
     dispatch(
-      makeChoice({
-        idEvent: id,
-        userId: userId,
-        accepted: false,
-        denied: true,
-      })
+      makeChoice(
+        {
+          idEvent: id,
+          userId: userId,
+          accepted: false,
+          denied: true,
+        },
+        decryptedUInfo
+      )
     );
   };
 
@@ -164,7 +172,7 @@ const CurrentEvent = () => {
           </div> */}
           <div className="stats__edit-event">
             <button
-              disabled={currentEvent.isFinished}
+              disabled={currentEvent.isFinished || sendingStatus}
               className="create-event__button"
               onClick={(e) => navigate(`/edit-event/${currentEvent._id}`)}
             >
@@ -172,6 +180,7 @@ const CurrentEvent = () => {
             </button>
 
             <button
+              disabled={sendingStatus}
               className="create-event__print-button"
               onClick={(e) => navigate(`/print-result/${currentEvent._id}`)}
             >

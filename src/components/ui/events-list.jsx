@@ -20,14 +20,14 @@ const EventsList = () => {
     closed: false,
   });
 
-  const { isAdmin } = useSelector((state) => state.user);
+  const { isAdmin, decryptedUInfo } = useSelector((state) => state.user);
   const target = useSelector((state) => state.checkbox.target);
 
   const { events, sendingStatus } = useSelector((state) => state.events);
 
   useEffect(() => {
     dispatch(changeTarget(""));
-    dispatch(getEvents());
+    dispatch(getEvents(decryptedUInfo));
   }, [dispatch]);
 
   let newData =
