@@ -3,21 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import AcceptedVote from "../modals/accepted-vote";
 import { makeChoice, checkVoiting } from "../../store/slices/user";
-import { getCurrentEvent } from "../../store/slices/events";
+import { getCurrentEvent, updateEvent } from "../../store/slices/events";
 import Loader from "../ui/loader";
 import { getAllAccs } from "../../store/slices/accounts";
-
-// import crypto from "crypto-js";
-
-// const cryptoObject = { one: 1, two: 2 };
-
-// let encrypt = crypto.Rabbit.encrypt(
-//   JSON.stringify(cryptoObject),
-//   "somepasskey"
-// ).toString();
-// let decrypt = JSON.parse(
-//   crypto.Rabbit.decrypt(encrypt, "somepasskey").toString(crypto.enc.Utf8)
-// );
 
 const CurrentEvent = () => {
   const dispatch = useDispatch();
@@ -29,7 +17,6 @@ const CurrentEvent = () => {
   const [voted, setVoted] = useState({
     voted: false,
     canVote: false,
-    openEvent: false,
   });
   const { id } = useParams();
 
@@ -83,6 +70,17 @@ const CurrentEvent = () => {
     );
   };
 
+  const changeOpportunityToVote = () => {
+    const newEventInfo = {
+      ...currentEvent,
+      opportunityToVote: !currentEvent.opportunityToVote,
+    };
+    dispatch(updateEvent(newEventInfo, id));
+    setTimeout(() => {
+      dispatch(getCurrentEvent(id));
+    }, 100);
+  };
+
   return (
     <>
       {openModal && <AcceptedVote />}
@@ -93,7 +91,9 @@ const CurrentEvent = () => {
         </div>
         {/* <div className="current-event__date">{currentEvent.dateOfCreate}</div> */}
         {/* if event is not finished and user includes in votingUsers array in this event */}
-        {!currentEvent.isFinished && voted.canVote && voted.openEvent ? (
+        {!currentEvent.isFinished &&
+        voted.canVote &&
+        currentEvent.opportunityToVote ? (
           <div
             className="current-event__buttons"
             onClick={(e) => voteFor(e.target)}
@@ -118,7 +118,8 @@ const CurrentEvent = () => {
               <Loader />
             ) : (
               <h2 className="current-event__closed">
-                Вы не можете принять участие в голосовании
+                Вы не можете принять участие в голосовании, либо голосование еще
+                не запущено.
               </h2>
             )}
           </div>
@@ -163,6 +164,7 @@ const CurrentEvent = () => {
           </div> */}
           <div className="stats__edit-event">
             <button
+              disabled={currentEvent.isFinished}
               className="create-event__button"
               onClick={(e) => navigate(`/edit-event/${currentEvent._id}`)}
             >
@@ -174,6 +176,14 @@ const CurrentEvent = () => {
               onClick={(e) => navigate(`/print-result/${currentEvent._id}`)}
             >
               Просмотреть версию для печати
+            </button>
+            <button
+              disabled={currentEvent.isFinished || sendingStatus}
+              className="create-event__print-button"
+              onClick={(e) => changeOpportunityToVote()}
+            >
+              {currentEvent.opportunityToVote ? "Остановить" : "Запустить"}{" "}
+              голосование
             </button>
           </div>
         </div>

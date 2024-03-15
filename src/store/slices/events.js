@@ -38,7 +38,6 @@ const events = createSlice({
 
     updateEvents(state, action) {
       state.events = [
-        ...state.events,
         ...state.events.map((item) => {
           if (item._id === action.payload._id) {
             return action.payload;

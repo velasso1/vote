@@ -32,6 +32,13 @@ const user = createSlice({
     },
 
     checkExpiresToken(state) {
+      // decryptedUInfo = JSON.parse(
+      //   crypto.Rabbit.decrypt(
+      //     localStorage.getItem("uinfo"),
+      //     `${process.env.REACT_APP_PASS_KEY}`
+      //   ).toString(crypto.enc.Utf8)
+      // );
+
       const { expiration } = decryptedUInfo || "null";
       state.tokenIsValid = expiration > new Date().getTime();
       if (!state.tokenIsValid) {
@@ -91,6 +98,7 @@ const user = createSlice({
       state.isAdmin = false;
       state.tokenIsValid = false;
       localStorage.removeItem("uinfo");
+      decryptedUInfo = "null";
     },
 
     setConfirmDeleting(state, action) {
