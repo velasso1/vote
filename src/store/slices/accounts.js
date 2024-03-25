@@ -40,6 +40,7 @@ const accounts = createSlice({
 // Actions
 
 export const getAllAccs = (decryptedUInfo) => {
+  console.log(decryptedUInfo, "REDUX");
   return (dispatch) => {
     try {
       dispatch(checkExpiresToken());

@@ -18,8 +18,9 @@ const Managing = () => {
   const [id, setId] = useState(null);
 
   useEffect(() => {
+    console.log(decryptedUInfo, "MANAGING");
     dispatch(getAllAccs(decryptedUInfo));
-  }, [dispatch]);
+  }, []);
 
   const editUserData = (e, user) => {
     if (e.target.className === "managing__delete") return;

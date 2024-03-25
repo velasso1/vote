@@ -28,8 +28,8 @@ const CurrentEvent = () => {
 
   useEffect(() => {
     dispatch(getCurrentEvent(id, decryptedUInfo));
-    dispatch(getAllAccs());
-  }, [dispatch, id]);
+    dispatch(getAllAccs(decryptedUInfo));
+  }, [dispatch]);
 
   useEffect(() => {
     if (currentEvent.votingUsers) {
@@ -83,9 +83,9 @@ const CurrentEvent = () => {
       ...currentEvent,
       opportunityToVote: !currentEvent.opportunityToVote,
     };
-    dispatch(updateEvent(newEventInfo, id));
+    dispatch(updateEvent(newEventInfo, id, decryptedUInfo));
     setTimeout(() => {
-      dispatch(getCurrentEvent(id));
+      dispatch(getCurrentEvent(id, decryptedUInfo));
     }, 100);
   };
 

@@ -11,6 +11,8 @@ const EditUser = () => {
   const { dataForUpdate, sendingStatus } = useSelector(
     (state) => state.accounts
   );
+  const { decryptedUInfo } = useSelector((state) => state.user);
+
   const navigate = useNavigate();
   const params = useParams();
   const [openModal, setOpenModal] = useState(false);
@@ -37,7 +39,7 @@ const EditUser = () => {
       setState({ error: false, empty: false, difPass: true });
       return;
     }
-    dispatch(updateUserData(userInfo, params.id));
+    dispatch(updateUserData(userInfo, params.id, decryptedUInfo));
     setOpenModal(true);
 
     setTimeout(() => {

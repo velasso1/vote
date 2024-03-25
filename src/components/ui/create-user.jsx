@@ -45,10 +45,11 @@ const CreateUser = () => {
     dispatch(createNewUser(userData, decryptedUInfo));
     setUserData({ login: "", password: "", fullName: "", repeatPassword: "" });
     setState({ error: false, empty: false });
+    console.log(decryptedUInfo, "HERE");
     dispatch(getAllAccs(decryptedUInfo));
     setTimeout(() => {
       navigate("/manage");
-    }, 150);
+    }, 1500);
   };
 
   return (

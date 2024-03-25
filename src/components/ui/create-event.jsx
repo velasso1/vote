@@ -12,18 +12,18 @@ const CreateEvent = ({ eventData, path, id }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(getAllAccs());
-  }, [dispatch]);
-
   const { accounts } = useSelector((state) => state.accounts);
   const { sendingStatus } = useSelector((state) => state.events);
-  const { decryptedUInfo } = useSelector((state) => state.decryptedUInfo);
+  const { decryptedUInfo } = useSelector((state) => state.user);
 
   const [state, setState] = useState({
     error: false,
     empty: false,
   });
+
+  useEffect(() => {
+    dispatch(getAllAccs(decryptedUInfo));
+  }, [dispatch]);
 
   const [eventInfo, setEventInfo] = useState({
     // check eventData for update event information. For create event value === ''

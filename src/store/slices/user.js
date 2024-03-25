@@ -160,12 +160,10 @@ export const makeChoice = (body, decryptedUInfo) => {
 };
 
 export const checkVoiting = (id, uid, decryptedUInfo) => {
-  console.log(decryptedUInfo);
   return async (dispatch) => {
     try {
       dispatch(checkExpiresToken());
       dispatch(changeSendingStatus(true));
-
       await fetch(`${process.env.REACT_APP_CHECK_VOICE}${id}`, {
         method: "POST",
         headers: {
