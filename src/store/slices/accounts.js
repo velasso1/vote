@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { checkExpiresToken } from "./user";
-import crypto from "crypto-js";
 
 const initialState = {
   accounts: [],
@@ -40,7 +39,6 @@ const accounts = createSlice({
 // Actions
 
 export const getAllAccs = (decryptedUInfo) => {
-  console.log(decryptedUInfo, "REDUX");
   return (dispatch) => {
     try {
       dispatch(checkExpiresToken());
@@ -119,7 +117,7 @@ export const createNewUser = (body, decryptedUInfo) => {
       })
         .then((resp) => resp.json())
         .then((data) => {
-          dispatch(getAllAccs());
+          dispatch(getAllAccs(decryptedUInfo));
           dispatch(changeSendingStatus(false));
         });
     } catch (err) {

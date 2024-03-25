@@ -18,7 +18,6 @@ const Managing = () => {
   const [id, setId] = useState(null);
 
   useEffect(() => {
-    console.log(decryptedUInfo, "MANAGING");
     dispatch(getAllAccs(decryptedUInfo));
   }, []);
 
